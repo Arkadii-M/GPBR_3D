@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\ExpressionTree">
+      <UniqueIdentifier>{3d1b75a7-20b8-4a70-a324-f1e73e50919e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ExpressionTree">
+      <UniqueIdentifier>{eb5e8506-dd03-444b-a460-858371a5c9f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Functions">
+      <UniqueIdentifier>{86ad8e01-192d-4652-8b0f-c1caf30921c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Functions">
+      <UniqueIdentifier>{312d13ee-6023-44fe-a8ce-16ef6422b9f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GP">
+      <UniqueIdentifier>{d4db118b-b5f4-49d3-8a7c-83033a2df7ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GP">
+      <UniqueIdentifier>{142fa926-2b9c-4a27-95b6-4533c627cf60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GP\Data">
+      <UniqueIdentifier>{b99771c1-b8fa-4883-8ba4-2efe982645a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GP\Data">
+      <UniqueIdentifier>{bd0d98e7-ac73-4512-8cfe-4f2b37996568}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\GPBR_3D\BinaryNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBR_3D\ConstantNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBR_3D\IExpressionNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBR_3D\UnaryNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBR_3D\VariableNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="ExpressionTree.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="random.hpp">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionInfo.h">
+      <Filter>Header Files\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Population.h">
+      <Filter>Header Files\GP</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneticOperator.h">
+      <Filter>Header Files\GP</Filter>
+    </ClInclude>
+    <ClInclude Include="Individuum.h">
+      <Filter>Header Files\GP</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeGenerator.h">
+      <Filter>Header Files\GP</Filter>
+    </ClInclude>
+    <ClInclude Include="TempNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoad.h">
+      <Filter>Header Files\GP</Filter>
+    </ClInclude>
+    <ClInclude Include="GpParser.h">
+      <Filter>Header Files\GP</Filter>
+    </ClInclude>
+    <ClInclude Include="GpItem.h">
+      <Filter>Header Files\GP\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="GpData.h">
+      <Filter>Header Files\GP\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Gp.h">
+      <Filter>Header Files\GP</Filter>
+    </ClInclude>
+    <ClInclude Include="Evaluator.h">
+      <Filter>Header Files\GP</Filter>
+    </ClInclude>
+    <ClInclude Include="Selector.h">
+      <Filter>Header Files\GP</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\GPBR_3D\BinaryNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPBR_3D\ConstantNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPBR_3D\IExpressionNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPBR_3D\UnaryNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPBR_3D\VariableNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="ExpressionTree.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionInfo.cpp">
+      <Filter>Source Files\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Population.cpp">
+      <Filter>Source Files\GP</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneticOperator.cpp">
+      <Filter>Source Files\GP</Filter>
+    </ClCompile>
+    <ClCompile Include="Individuum.cpp">
+      <Filter>Source Files\GP</Filter>
+    </ClCompile>
+    <ClCompile Include="TempNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="GpParser.cpp">
+      <Filter>Source Files\GP</Filter>
+    </ClCompile>
+    <ClCompile Include="GpData.cpp">
+      <Filter>Source Files\GP\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Gp.cpp">
+      <Filter>Source Files\GP</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeGenerator.cpp">
+      <Filter>Source Files\GP</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
