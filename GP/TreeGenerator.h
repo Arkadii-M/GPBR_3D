@@ -23,6 +23,10 @@ public:
 	virtual std::unique_ptr<IExpressionNode> generateSubTree() = 0;
 	virtual std::unique_ptr<IExpressionNode> generateSubTree(uint h) = 0;
 	virtual std::unique_ptr<IExpressionNode> generateSubTree(uint max_h, uint min_h) = 0;
+
+	virtual std::unique_ptr<IExpressionNode> generateTerminal() = 0;
+	virtual std::unique_ptr<IExpressionNode> generateUnary() = 0;
+	virtual std::unique_ptr<IExpressionNode> generateBinary() = 0;
 };
 
 #endif //TREE_GENERATOR_H

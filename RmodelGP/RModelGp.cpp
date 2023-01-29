@@ -134,7 +134,7 @@ void RmodelGp::executeOne()
 		{
 			if (r < cross_sel.first)
 			{
-				this->crossove_operators.at(cross_sel.second)->operator()((*CrossPairIt).first, (*CrossPairIt).second);
+				this->crossove_operators.at(cross_sel.second)->apply((*CrossPairIt).first, (*CrossPairIt).second);
 				break;
 			}
 		}
@@ -152,7 +152,7 @@ void RmodelGp::executeOne()
 			if (r < mut_sel.first)
 			{
 				//this->mutate_operators.at(mut_sel.second)->Apply((*MutIt));
-				this->mutate_operators.at(mut_sel.second)->operator()((*MutIt));
+				this->mutate_operators.at(mut_sel.second)->apply((*MutIt));
 				break;
 			}
 		}

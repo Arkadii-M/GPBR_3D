@@ -39,21 +39,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\GPBR_3D\BinaryNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GPBR_3D\ConstantNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GPBR_3D\IExpressionNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GPBR_3D\UnaryNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GPBR_3D\VariableNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
     <ClInclude Include="ExpressionTree.h">
       <Filter>Header Files\ExpressionTree</Filter>
     </ClInclude>
@@ -99,23 +84,23 @@
     <ClInclude Include="Selector.h">
       <Filter>Header Files\GP</Filter>
     </ClInclude>
+    <ClInclude Include="VariableNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="IExpressionNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="UnaryNode.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\GPBR_3D\BinaryNode.cpp">
-      <Filter>Source Files\ExpressionTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\GPBR_3D\ConstantNode.cpp">
-      <Filter>Source Files\ExpressionTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\GPBR_3D\IExpressionNode.cpp">
-      <Filter>Source Files\ExpressionTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\GPBR_3D\UnaryNode.cpp">
-      <Filter>Source Files\ExpressionTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\GPBR_3D\VariableNode.cpp">
-      <Filter>Source Files\ExpressionTree</Filter>
-    </ClCompile>
     <ClCompile Include="ExpressionTree.cpp">
       <Filter>Source Files\ExpressionTree</Filter>
     </ClCompile>
@@ -145,6 +130,21 @@
     </ClCompile>
     <ClCompile Include="TreeGenerator.cpp">
       <Filter>Source Files\GP</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="IExpressionNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="UnaryNode.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 #pragma once
-#include "../GPBR_3D/BinaryNode.h"
-#include "../GPBR_3D/UnaryNode.h"
+#include "BinaryNode.h"
+#include "UnaryNode.h"
 #include <set>
 #include "GpItem.h"
 #ifndef GP_DATA_H

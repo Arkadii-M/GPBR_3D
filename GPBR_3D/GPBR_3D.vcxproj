@@ -133,16 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="INode.cpp" />
     <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BinaryFunction.h" />
-    <ClInclude Include="Constant.h" />
-    <ClInclude Include="IDerivative.h" />
-    <ClInclude Include="INode.h" />
-    <ClInclude Include="UnaryFunction.h" />
-    <ClInclude Include="Variable.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GP\GP.vcxproj">

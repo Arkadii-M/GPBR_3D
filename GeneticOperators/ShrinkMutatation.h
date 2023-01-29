@@ -1,20 +1,19 @@
+#pragma once
 #include "../GP/GeneticOperator.h"
-#include "../GP/TreeGenerator.h"
 #include "../GP/random.hpp"
 #include "NodeFilter.h"
-
-#ifndef MUTATE_NODE_REPLACE_H
-#define MUTATE_NODE_REPLACE_H
-
+#include "../TreeGenerator/FullGrow.h"
+#ifndef MUTATE_SHRINK_H
+#define MUTATE_SHRINK_H
 
 using Random = effolkronium::random_static;
 
-class NodeReplaceMutation :public GeneticOpretator // WMinMaxHC - with minimum and maximum height control
+class ShrinkMutation :public GeneticOpretator // Select and return random subtree
 {
 private:
 	std::shared_ptr<TreeGenerator> tree_gen;
 public:
-	NodeReplaceMutation(std::shared_ptr<TreeGenerator> tree_gen, double prob = 1.0);
+	ShrinkMutation(std::shared_ptr<TreeGenerator> tree_gen, double prob = 1.0);
 	void apply(std::weak_ptr<Individuum> individuum) override;
 private:
 	struct Filter : public ExpressionTree::NodeFilter
@@ -22,4 +21,5 @@ private:
 		virtual bool selectCondition(const std::unique_ptr<IExpressionNode>& node) override;
 	};
 };
-#endif // !MUTATE_NODE_REPLACE_H
+
+#endif // !MUTATE_HOIST_H

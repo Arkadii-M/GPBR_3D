@@ -1,7 +1,7 @@
 #pragma once
 #ifndef TEMP_NODE_H
 #define TEMP_NODE_H
-#include "../GPBR_3D/IExpressionNode.h"
+#include "IExpressionNode.h"
 
 
 class TempNode :public IExpressionNode

@@ -73,7 +73,8 @@ double Population::bestFitness()
 
 double Population::avgFitness()
 {
-	return (std::accumulate(population.begin(), population.end(), 0.0f, Individuum::sum_weak) / (double)this->popSize());
+	//return (std::accumulate(population.begin(), population.end(), 0.0f, Individuum::sum_weak) / (double)this->popSize());
+	return 0.0;
 }
 
 void Population::clear()

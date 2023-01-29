@@ -39,6 +39,21 @@
     <ClInclude Include="NodeReplaceMutation.h">
       <Filter>Header Files\Mutation</Filter>
     </ClInclude>
+    <ClInclude Include="ShrinkMutatation.h">
+      <Filter>Header Files\Mutation</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapMutation.h">
+      <Filter>Header Files\Mutation</Filter>
+    </ClInclude>
+    <ClInclude Include="OnePointCrossover.h">
+      <Filter>Header Files\Crossover</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformCrossover.h">
+      <Filter>Header Files\Crossover</Filter>
+    </ClInclude>
+    <ClInclude Include="TerminalMutation.h">
+      <Filter>Header Files\Mutation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HoistMutation.cpp">
@@ -46,6 +61,21 @@
     </ClCompile>
     <ClCompile Include="NodeReplaceMutation.cpp">
       <Filter>Source Files\Mutation</Filter>
+    </ClCompile>
+    <ClCompile Include="OnePointCrossover.cpp">
+      <Filter>Source Files\Crossover</Filter>
+    </ClCompile>
+    <ClCompile Include="ShrinkMutatation.cpp">
+      <Filter>Source Files\Mutation</Filter>
+    </ClCompile>
+    <ClCompile Include="SwapMutation.cpp">
+      <Filter>Source Files\Mutation</Filter>
+    </ClCompile>
+    <ClCompile Include="TerminalMutation.cpp">
+      <Filter>Source Files\Mutation</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformCrossover.cpp">
+      <Filter>Source Files\Crossover</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

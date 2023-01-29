@@ -1,10 +1,10 @@
 #include "SolutionPlotter.h"
 
-SolutionPlotter::SolutionPlotter(std::string g2_boundary, uint n_thetha, uint n_phi):
-	g2_boundary(g2_boundary),
+SolutionPlotter::SolutionPlotter(std::string exact_surface, uint n_thetha, uint n_phi):
+	exact_surface(exact_surface),
 	n_thetha(n_thetha),
 	n_phi(n_phi),
-	plot_g2(false)
+	plot_exact(true)
 {
 	pipe.release();
 }
@@ -15,21 +15,21 @@ void SolutionPlotter::plotToFile(const std::string G1, const std::string file_na
 	this->openPipe();
 	// N thetha,N phi, G1 expression, G2 expression (if empty don't plot), file_name
 	std::string call_str;
-	if (plot_g2)
-	{
-		call_str = std::format("plot3dmesh({},{},'{}','','{}')\n",
-			n_thetha,
-			n_phi,
-			G1,
-			file_name);
-	}
-	else
+	if (plot_exact)
 	{
 		call_str = std::format("plot3dmesh({},{},'{}','{}','{}')\n",
 			n_thetha,
 			n_phi,
 			G1,
-			g2_boundary,
+			exact_surface,
+			file_name);
+	}
+	else
+	{
+		call_str = std::format("plot3dmesh({},{},'{}','','{}')\n",
+			n_thetha,
+			n_phi,
+			G1,
 			file_name);
 	}
 	if (pipe)

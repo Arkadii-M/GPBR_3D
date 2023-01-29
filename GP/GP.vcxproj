@@ -133,11 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\GPBR_3D\BinaryNode.h" />
-    <ClInclude Include="..\GPBR_3D\ConstantNode.h" />
-    <ClInclude Include="..\GPBR_3D\IExpressionNode.h" />
-    <ClInclude Include="..\GPBR_3D\UnaryNode.h" />
-    <ClInclude Include="..\GPBR_3D\VariableNode.h" />
+    <ClInclude Include="BinaryNode.h" />
+    <ClInclude Include="ConstantNode.h" />
     <ClInclude Include="Evaluator.h" />
     <ClInclude Include="FunctionInfo.h" />
     <ClInclude Include="ExpressionTree.h" />
@@ -145,6 +142,7 @@
     <ClInclude Include="Gp.h" />
     <ClInclude Include="GpData.h" />
     <ClInclude Include="GpItem.h" />
+    <ClInclude Include="IExpressionNode.h" />
     <ClInclude Include="Individuum.h" />
     <ClInclude Include="GpParser.h" />
     <ClInclude Include="Population.h" />
@@ -153,23 +151,25 @@
     <ClInclude Include="Selector.h" />
     <ClInclude Include="TempNode.h" />
     <ClInclude Include="TreeGenerator.h" />
+    <ClInclude Include="UnaryNode.h" />
+    <ClInclude Include="VariableNode.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\GPBR_3D\BinaryNode.cpp" />
-    <ClCompile Include="..\GPBR_3D\ConstantNode.cpp" />
-    <ClCompile Include="..\GPBR_3D\IExpressionNode.cpp" />
-    <ClCompile Include="..\GPBR_3D\UnaryNode.cpp" />
-    <ClCompile Include="..\GPBR_3D\VariableNode.cpp" />
+    <ClCompile Include="BinaryNode.cpp" />
+    <ClCompile Include="ConstantNode.cpp" />
     <ClCompile Include="ExpressionTree.cpp" />
     <ClCompile Include="FunctionInfo.cpp" />
     <ClCompile Include="GeneticOperator.cpp" />
     <ClCompile Include="Gp.cpp" />
     <ClCompile Include="GpData.cpp" />
     <ClCompile Include="GpParser.cpp" />
+    <ClCompile Include="IExpressionNode.cpp" />
     <ClCompile Include="Individuum.cpp" />
     <ClCompile Include="Population.cpp" />
     <ClCompile Include="TempNode.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
+    <ClCompile Include="UnaryNode.cpp" />
+    <ClCompile Include="VariableNode.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,7 +21,9 @@ void HoistMutation::apply(std::weak_ptr<Individuum> individuum)
 		return;
 	uint rand_node = *Random::get(nodes_list.begin(), nodes_list.end());
 
-	individuum.lock()->setTree(std::make_unique<ExpressionTree>(ExpressionTree::SubTree(tree, rand_node)));
+	auto observer = tree->getNodeObserver(rand_node);
+
+	individuum.lock()->setTree(std::make_unique<ExpressionTree>(observer->subTreeCopy()));
 }
 HoistMutation::Filter::Filter(uint min_h):
 	min_h(min_h)

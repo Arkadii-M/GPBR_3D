@@ -19,11 +19,11 @@ private:
 
 	const uint n_thetha;
 	const uint n_phi;
-	std::string g2_boundary;
-	bool plot_g2;
+	std::string exact_surface;
+	bool plot_exact;
 public:
 
-	SolutionPlotter(std::string g2_boundary, uint n_thetha,uint n_phi);
+	SolutionPlotter(std::string exact_surface, uint n_thetha,uint n_phi);
 	~SolutionPlotter() = default;
 
 	void plotToFile(const std::string G1, const std::string file_name);

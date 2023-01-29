@@ -6,7 +6,8 @@ typedef unsigned int uint;
 #include <algorithm>
 #include <iterator>
 
-#include "../GPBR_3D/IExpressionNode.h"
+#include "IExpressionNode.h"
+#include "TempNode.h"
 
 class ExpressionTree {
 
@@ -14,6 +15,45 @@ private:
 	uint total_nodes;
 	std::unique_ptr<IExpressionNode> root;
 
+public:
+	class NodeObserve {
+	private:
+		std::unique_ptr<IExpressionNode>& current;
+	public:
+		NodeObserve() = default;
+		NodeObserve(std::unique_ptr<IExpressionNode>& curr);
+		~NodeObserve() = default;
+
+		std::unique_ptr<NodeObserve> getLeft() const;
+		std::unique_ptr<NodeObserve> getRight() const;
+		bool isLeaf() const;
+		bool isUnary() const;
+		bool isBinary() const;
+		bool isNull() const;
+
+		std::string getName() const;
+		uint getNum() const;
+		std::string print() const;
+
+		std::unique_ptr<IExpressionNode> subTreeCopy();
+		static void SwapSubTrees(std::unique_ptr<NodeObserve>& first, std::unique_ptr<NodeObserve>& second);
+		static void SwapSubTrees(std::unique_ptr<NodeObserve>& first, std::unique_ptr<IExpressionNode> second);
+		static void ReplaceNodes(std::unique_ptr<NodeObserve>& first, std::unique_ptr<NodeObserve>& second);
+		static void ReplaceNodes(std::unique_ptr<NodeObserve>& first, std::unique_ptr<IExpressionNode> second);
+	};
+	static void SwapSubTress(
+		std::unique_ptr<ExpressionTree>& first_tree,
+		std::unique_ptr<ExpressionTree>& second_tree,
+		std::unique_ptr<NodeObserve>& first_observe,
+		std::unique_ptr<NodeObserve>& second_observe);
+	static void ReplaceNodes(
+		std::unique_ptr<ExpressionTree>& first_tree,
+		std::unique_ptr<ExpressionTree>& second_tree,
+		std::unique_ptr<NodeObserve>& first_observe,
+		std::unique_ptr<NodeObserve>& second_observe);
+
+	std::unique_ptr<NodeObserve> getRootObserver();
+	std::unique_ptr <NodeObserve> getNodeObserver(uint node_id);
 
 	/// <summary>
 	/// Tree traversal with handler.
@@ -23,15 +63,15 @@ private:
 	struct OrderHandler {
 	public:
 		OrderHandler() = default;
-		virtual void onVisitLeft(){};
-		virtual void onVisitRight(){};
-		virtual void onEmpty(){};
+		virtual void onVisitLeft() {};
+		virtual void onVisitRight() {};
+		virtual void onEmpty() {};
 		virtual void onReturn() {};
 		virtual bool operator()(std::unique_ptr<IExpressionNode>& node) = 0;
 	};
-	struct EnumerateHandler : public OrderHandler{
+	struct EnumerateHandler : public OrderHandler {
 	private:
-		uint num {1};
+		uint num{ 1 };
 		uint total_nodes{ 0 };
 		uint curr_d{ 0 };
 	public:
@@ -51,50 +91,17 @@ private:
 		// Inherited via OrderHandler
 		virtual bool operator()(std::unique_ptr<IExpressionNode>& node) override;
 	};
-
-
-	struct SwapByIndexHandler : public OrderHandler {
+	struct ObserverExtract : public OrderHandler {
 	private:
-		const uint find_index;
-		std::unique_ptr<IExpressionNode>& find_node;
+		const uint node_id;
+		std::unique_ptr<NodeObserve> observer;
 	public:
-		SwapByIndexHandler(uint index, std::unique_ptr<IExpressionNode>& to_set);
-
+		ObserverExtract(uint id);
+		std::unique_ptr<NodeObserve> getObserver();
 		// Inherited via OrderHandler
 		virtual bool operator()(std::unique_ptr<IExpressionNode>& node) override;
+
 	};
-
-	struct SwapTempHandler : public OrderHandler {
-	private:
-		std::unique_ptr<IExpressionNode>& find_node;
-	public:
-		SwapTempHandler(std::unique_ptr<IExpressionNode>& to_set);
-
-		// Inherited via OrderHandler
-		virtual bool operator()(std::unique_ptr<IExpressionNode>& node) override;
-	};
-
-	struct ExtractSubTree : public OrderHandler {
-	private:
-		std::unique_ptr<IExpressionNode> sub_tree;
-		const uint index;
-	public:
-		ExtractSubTree(uint index);
-		std::unique_ptr<IExpressionNode> getResult();
-		// Inherited via OrderHandler
-		virtual bool operator()(std::unique_ptr<IExpressionNode>& node) override;
-	};
-
-	struct ReplaceNode : public OrderHandler {
-	private:
-		std::unique_ptr<IExpressionNode>& to_replace;
-		const uint index;
-	public:
-		ReplaceNode(uint index, std::unique_ptr<IExpressionNode>& to_replace);
-		// Inherited via OrderHandler
-		virtual bool operator()(std::unique_ptr<IExpressionNode>& node) override;
-	};
-
 
 	bool inOrder(std::unique_ptr<IExpressionNode>& node, std::unique_ptr<OrderHandler>& handler);
 	bool preOrder(std::unique_ptr<IExpressionNode>& node, std::unique_ptr<OrderHandler>& handler);
@@ -105,8 +112,6 @@ public:
 	ExpressionTree(const ExpressionTree& tree);
 	~ExpressionTree() = default;
 
-
-	std::unique_ptr<IExpressionNode>& getRoot();
 	void enumerateNodes();
 
 	uint getTotalNodes() const;
@@ -115,15 +120,6 @@ public:
 	void recalculate();
 
 	std::string print();
-
-	static std::unique_ptr<IExpressionNode> SubTree(std::unique_ptr<ExpressionTree>& tree, const uint sub_index);
-	static void ReplaceNode(std::unique_ptr<ExpressionTree>& tree, const uint index, std::unique_ptr<ExpressionTree>& to_replace);
-	static bool Equal(const ExpressionTree& first, const ExpressionTree& second);
-	static void SwapNodesAtPositions(
-		std::unique_ptr<ExpressionTree>& first_tree,
-		std::unique_ptr<ExpressionTree>& second_tree,
-		const uint first_node_pos,
-		const uint second_node_pos);
 
 	struct NodeFilter : public OrderHandler
 	{
@@ -136,6 +132,8 @@ public:
 		std::vector<uint> getResult();
 	};
 	std::vector<uint> filterNodesIdexes(std::unique_ptr<NodeFilter> filter);
+
+	std::unique_ptr<IExpressionNode> SubTree(std::unique_ptr<ExpressionTree>& tree, const uint sub_index);
 };
 
 #endif // ! EXPRESSION_TREE_H

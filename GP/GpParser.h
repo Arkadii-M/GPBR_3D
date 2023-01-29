@@ -10,10 +10,10 @@
 #include "GpData.h"
 
 
-#include "../GPBR_3D/BinaryNode.h"
-#include "../GPBR_3D/UnaryNode.h"
-#include "../GPBR_3D/VariableNode.h"
-#include "../GPBR_3D/ConstantNode.h"
+#include "BinaryNode.h"
+#include "UnaryNode.h"
+#include "ConstantNode.h"
+#include "VariableNode.h"
 #include "Population.h"
 #include "Individuum.h"
 
@@ -39,7 +39,7 @@ public:
 	void parseJsonToPopulation(json jpopulation, Population& population);
 private:
 	// Tree
-	json parseSubTreeToJson(std::unique_ptr<IExpressionNode>& node);
+	json parseSubTreeToJson(std::unique_ptr<ExpressionTree::NodeObserve> node);
 	std::unique_ptr<IExpressionNode> parseJsonToSubTree(json subtree);
 
 };

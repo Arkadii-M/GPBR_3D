@@ -40,6 +40,14 @@ private:
 	std::unique_ptr<IExpressionNode> createTerminal(uint ltc);
 	std::unique_ptr<IExpressionNode> createFunctional(uint ltc);
 
+public:
+	// Inherited via TreeGenerator
+	virtual std::unique_ptr<IExpressionNode> generateTerminal() override;
+
+	virtual std::unique_ptr<IExpressionNode> generateUnary() override;
+
+	virtual std::unique_ptr<IExpressionNode> generateBinary() override;
+
 };
 
 

@@ -1,6 +1,6 @@
 #include "FullGrow.h"
-#include "../GPBR_3D/VariableNode.h"
-#include "../GPBR_3D/ConstantNode.h"
+#include "../GP/VariableNode.h"
+#include "../GP/ConstantNode.h"
 
 FullGrowGenerator::FullGrowGenerator(std::shared_ptr<GpData>& dat, uint min_h, uint max_h):
 	TreeGenerator(dat),
@@ -81,4 +81,30 @@ std::unique_ptr<IExpressionNode> FullGrowGenerator::createFunctional(uint ltc)
 	auto bfunc = *Random::get(bfuncs.begin(), bfuncs.end());
 
 	return std::make_unique<BinaryNode>(bfunc.getItem(), bfunc.getName(), randTree(ltc - 1), randTree(ltc - 1));
+}
+
+std::unique_ptr<IExpressionNode> FullGrowGenerator::generateTerminal()
+{
+	if (Random::get<bool>()) // Create variable
+	{
+		auto vars = data->getVariables();
+		return std::make_unique<VariableNode>(Random::get(vars.begin(), vars.end())->getItem());
+	}
+	auto consts = data->getConstants();
+	return std::make_unique<ConstantNode>(Random::get(consts.begin(), consts.end())->getItem(), data->getEvalNRows(), data->getEvalNCols());
+}
+
+std::unique_ptr<IExpressionNode> FullGrowGenerator::generateUnary()
+{
+	auto ufuncs = data->getUnaryFunction();
+	auto ufunc = *Random::get(ufuncs.begin(), ufuncs.end());
+	return std::make_unique<UnaryNode>(ufunc.getItem(), ufunc.getName(), nullptr);
+}
+
+std::unique_ptr<IExpressionNode> FullGrowGenerator::generateBinary()
+{
+	auto bfuncs = data->getBinaryFunction();
+	auto bfunc = *Random::get(bfuncs.begin(), bfuncs.end());
+
+	return std::make_unique<BinaryNode>(bfunc.getItem(), bfunc.getName(), nullptr,nullptr);
 }

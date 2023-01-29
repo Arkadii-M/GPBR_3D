@@ -1,5 +1,4 @@
 #include "GpParser.h"
-#include "../GPBR_3D/ConstantNode.h"
 
 GpParser::GpParser(std::shared_ptr<GpData> data):
 	data(data)
@@ -8,16 +7,16 @@ GpParser::GpParser(std::shared_ptr<GpData> data):
 
 json GpParser::parseTreeToJson(std::unique_ptr<ExpressionTree>& tree)
 {
-	return parseSubTreeToJson(tree->getRoot());
+	return parseSubTreeToJson(tree->getRootObserver());
 }
-json GpParser::parseSubTreeToJson(std::unique_ptr<IExpressionNode>& node)
+json GpParser::parseSubTreeToJson(std::unique_ptr<ExpressionTree::NodeObserve> node)
 {
 	if (!node)
 		return nullptr;
 	return {
 		{"name",	node->getName()},
-		{"left", parseSubTreeToJson(node->getLeftSon())},
-		{"right", parseSubTreeToJson(node->getRightSon())}
+		{"left", parseSubTreeToJson(node->getLeft())},
+		{"right", parseSubTreeToJson(node->getRight())}
 	};
 }
 

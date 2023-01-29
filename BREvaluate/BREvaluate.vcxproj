@@ -21,9 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{1f856b58-f8fa-495a-9dd3-dcb05de7ac90}</ProjectGuid>
-    <RootNamespace>GeneticOperators</RootNamespace>
+    <ProjectGuid>{ffad085d-367f-4e19-b0b1-001fe7caac6f}</ProjectGuid>
+    <RootNamespace>BREvaluate</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CpuBREvaluate</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -114,6 +115,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libopenblas.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -132,23 +136,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="HoistMutation.h" />
-    <ClInclude Include="NodeFilter.h" />
-    <ClInclude Include="NodeReplaceMutation.h" />
-    <ClInclude Include="OnePointCrossover.h" />
-    <ClInclude Include="ShrinkMutatation.h" />
-    <ClInclude Include="SwapMutation.h" />
-    <ClInclude Include="TerminalMutation.h" />
-    <ClInclude Include="UniformCrossover.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="HoistMutation.cpp" />
-    <ClCompile Include="NodeReplaceMutation.cpp" />
-    <ClCompile Include="OnePointCrossover.cpp" />
-    <ClCompile Include="ShrinkMutatation.cpp" />
-    <ClCompile Include="SwapMutation.cpp" />
-    <ClCompile Include="TerminalMutation.cpp" />
-    <ClCompile Include="UniformCrossover.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
