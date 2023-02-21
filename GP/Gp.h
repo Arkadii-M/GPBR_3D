@@ -15,7 +15,8 @@ protected:
 	double delta_max;
 public:
 	GP(std::unique_ptr<Evaluator> ev,
-		std::shared_ptr<TreeGenerator> gen);
+		std::shared_ptr<TreeGenerator> gen,
+		uint max_n_change,double delta);
 
 	virtual bool execute(uint iter) = 0;
 	virtual void generatePopulation(uint pop_size) = 0;

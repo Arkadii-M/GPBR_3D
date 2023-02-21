@@ -5,8 +5,10 @@ RmodelGp::RmodelGp(std::unique_ptr<Evaluator> ev,
     std::unique_ptr<RModelSelector> select,
     std::vector<std::unique_ptr<GeneticOpretator>>& mut_operators,
     std::vector<std::unique_ptr<GeneticOpretator>>& cross_operators,
-	std::unique_ptr<SolutionProcesser> processor):
-    GP(std::move(ev), gen),
+	std::unique_ptr<SolutionProcesser> processor,
+	uint max_n_change,
+	double delta):
+    GP(std::move(ev), gen,max_n_change,delta),
     selector(std::move(select)),
 	processor(std::move(processor))
 {
@@ -76,7 +78,7 @@ bool RmodelGp::execute(uint iter)
 		auto end = sc.now();       // end timer (starting & ending is done by measuring the time at the moment the process started & ended respectively)
 		auto time_span = static_cast<std::chrono::duration<double>>(end - start);   // measure time span between start & end
 		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(time_span);
-
+		std::cout << "Iteration time: " << duration << "\n";
 		auto best = population.getBest();
 		processor->appendOne(SolutionProcesser::IterationHistory{
 			.iter = i+1,
@@ -87,6 +89,10 @@ bool RmodelGp::execute(uint iter)
 			.time_ms = duration
 			});
 
+		if (i % 5)
+		{
+			processor->savePopulation(population);
+		}
 
 		curr_error = best.lock()->getFintness();
 		if (curr_error < delta_max)
@@ -99,8 +105,8 @@ bool RmodelGp::execute(uint iter)
 				return false;
 
 		last_error = curr_error;
-
 	}
+	processor->savePopulation(population);
 	return true;
 }
 
@@ -111,6 +117,7 @@ void RmodelGp::generatePopulation(uint pop_size)
 	for (int i = 0; i < pop_size; ++i)
 	{
 		auto ind = std::make_shared<Individuum>(generator->generateTree());
+		//std::cout << " tree height: " << ind->getTree()->getHeight() << "\n";
 		population.insertOne(ind);
 	}
 	this->evaluatePopulation();

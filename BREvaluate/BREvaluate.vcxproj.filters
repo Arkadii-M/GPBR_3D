@@ -13,5 +13,87 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Curvature">
+      <UniqueIdentifier>{d0d9d860-ca6b-46e3-8ce3-6f33d4fbd119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Boundary">
+      <UniqueIdentifier>{b3307d3f-0c99-49ab-8ccd-3e47843f3bfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Boundary">
+      <UniqueIdentifier>{8d958e6d-cb1f-4047-9c5d-a374fbddd9d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Helpers">
+      <UniqueIdentifier>{8bf695a4-1729-4855-9c3b-a0ac8db16dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helper">
+      <UniqueIdentifier>{732017e9-d27a-4e1a-9db3-e42a25e40f4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Curvature">
+      <UniqueIdentifier>{63548e06-a6b3-4790-b5c0-d908171f89e0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bezier.h">
+      <Filter>Header Files\Curvature</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierCurvature.h">
+      <Filter>Header Files\Curvature</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereBoundary.h">
+      <Filter>Header Files\Boundary</Filter>
+    </ClInclude>
+    <ClInclude Include="StarlikeBoundary.h">
+      <Filter>Header Files\Boundary</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundaryCondtition.h">
+      <Filter>Header Files\Boundary</Filter>
+    </ClInclude>
+    <ClInclude Include="ProblemHelper.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshIntersection.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="MFSCollocation.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="PeriodicMesh.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="EvaluateCpu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BoundaryCondtition.cpp">
+      <Filter>Source Files\Boundary</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereBoundary.cpp">
+      <Filter>Source Files\Boundary</Filter>
+    </ClCompile>
+    <ClCompile Include="StarlikeBoundary.cpp">
+      <Filter>Source Files\Boundary</Filter>
+    </ClCompile>
+    <ClCompile Include="MFSCollocation.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="ProblemHelper.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshIntersection.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluateCpu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PeriodicMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bezier.cpp">
+      <Filter>Source Files\Curvature</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierCurvature.cpp">
+      <Filter>Source Files\Curvature</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

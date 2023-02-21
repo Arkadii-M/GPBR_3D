@@ -134,9 +134,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="FullGrow.h" />
+    <ClInclude Include="PTC-1.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FullGrow.cpp" />
+    <ClCompile Include="PTC-1.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

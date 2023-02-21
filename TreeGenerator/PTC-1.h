@@ -3,21 +3,21 @@
 #include "../GP/GpData.h"
 #include "../GP/TreeGenerator.h"
 #include "../GP/random.hpp"
+#include <numeric>      // std::accumulate
 
-#ifndef FULL_GROW_H
-#define FULL_GROW_H
+#ifndef PTC_1_H
+#define PTC_1_H
 
 using Random = effolkronium::random_static;
 
-class FullGrowGenerator : public TreeGenerator
+class PTC_1_Generator : public TreeGenerator
 {
 private:
-	uint min_height;
-	uint max_height;
-	uint terminal_count;
-	uint functional_count;
+	uint expect_size;
+	uint max_h;
+	double prob_p; // probability of choosing a nonterminal over a terminals in order to produce a tree with an expected size;
 public:
-	FullGrowGenerator(std::shared_ptr<GpData>& dat, uint min_h, uint max_h);
+	PTC_1_Generator(std::shared_ptr<GpData>& dat,uint expect_size, uint max_h);
 
 
 
@@ -35,7 +35,7 @@ public:
 	virtual std::unique_ptr<IExpressionNode> generateSubTree(uint max_h, uint min_h) override;
 
 private:
-	std::unique_ptr<IExpressionNode> randTree(uint ltc);
+	std::unique_ptr<IExpressionNode> ptc1Alg(uint ltc);
 
 	std::unique_ptr<IExpressionNode> createTerminal(uint ltc);
 	std::unique_ptr<IExpressionNode> createFunctional(uint ltc);
@@ -43,4 +43,4 @@ private:
 };
 
 
-#endif // FULL_GROW_H
+#endif // PTC_1_H

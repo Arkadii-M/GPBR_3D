@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ConstMutation.h" />
     <ClInclude Include="HoistMutation.h" />
     <ClInclude Include="NodeFilter.h" />
     <ClInclude Include="NodeReplaceMutation.h" />
@@ -142,6 +143,7 @@
     <ClInclude Include="UniformCrossover.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConstMutation.cpp" />
     <ClCompile Include="HoistMutation.cpp" />
     <ClCompile Include="NodeReplaceMutation.cpp" />
     <ClCompile Include="OnePointCrossover.cpp" />

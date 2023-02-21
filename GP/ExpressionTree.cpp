@@ -468,6 +468,11 @@ std::vector<uint> ExpressionTree::filterNodesIdexes(std::unique_ptr<NodeFilter> 
 	return static_cast<NodeFilter*>(node_filter.get())->getResult();
 }
 
+arma::dmat ExpressionTree::evaluate(const arma::dmat& thetha, const arma::dmat& phi)
+{
+	return root->evaluate(thetha,phi);
+}
+
 // Enumerate implementation
 void ExpressionTree::EnumerateHandler::onVisitLeft() { curr_d++; }// go to the next level
 void ExpressionTree::EnumerateHandler::onVisitRight() { curr_d++; }// go to the next level

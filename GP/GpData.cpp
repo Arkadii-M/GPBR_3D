@@ -5,7 +5,7 @@ GpData::GpData(Bset bfuncs, Uset ufuncs, Vset vars, Cset consts,
 	binary_functions(bfuncs),
 	unary_functions(ufuncs),
 	variables(vars),
-	constants(constants),
+	constants(consts),
 	n_rows(n_rows),
 	n_cols(n_cols)
 {

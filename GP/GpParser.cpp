@@ -11,7 +11,7 @@ json GpParser::parseTreeToJson(std::unique_ptr<ExpressionTree>& tree)
 }
 json GpParser::parseSubTreeToJson(std::unique_ptr<ExpressionTree::NodeObserve> node)
 {
-	if (!node)
+	if (node->isNull())
 		return nullptr;
 	return {
 		{"name",	node->getName()},
@@ -34,8 +34,10 @@ std::unique_ptr<IExpressionNode> GpParser::parseJsonToSubTree(json subtree)
 	auto& left = subtree["left"];
 	auto& right = subtree["right"];
 
+	//if (name.is_number()) // Constant
+	//	return std::make_unique<ConstantNode>((double)name, data->getEvalNRows(), data->getEvalNCols());
 	if (name.is_number()) // Constant
-		return std::make_unique<ConstantNode>((double)name, data->getEvalNRows(), data->getEvalNCols());
+		return std::make_unique<ConstantNode>((double)name);
 
 
 	if (left.is_null())

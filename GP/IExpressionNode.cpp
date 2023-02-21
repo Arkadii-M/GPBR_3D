@@ -129,12 +129,12 @@ std::unique_ptr<IExpressionNode>& IExpressionNode::getRightSon()
 	return right;
 }
 
-void IExpressionNode::setLeftSon(std::unique_ptr<IExpressionNode>& rhs)
+void IExpressionNode::setLeftSon(std::unique_ptr<IExpressionNode> rhs)
 {
 	left = std::move(rhs);
 }
 
-void IExpressionNode::setRightSon(std::unique_ptr<IExpressionNode>& rhs)
+void IExpressionNode::setRightSon(std::unique_ptr<IExpressionNode> rhs)
 {
 	right = std::move(rhs);
 }

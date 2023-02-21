@@ -4,7 +4,7 @@ UniformCrossover::UniformCrossover(double replace_prob,double prob):
 	GeneticOpretator(prob),
 	replace_prob(replace_prob)
 {
-	if (replace_prob > 0 && replace_prob < 1.0)
+	if (!(replace_prob > 0 && replace_prob < 1.0))
 		throw std::invalid_argument(std::format("Replace probabilty must be in (0,1) but {} was given.",replace_prob));
 }
 

@@ -1,8 +1,11 @@
 #include "Gp.h"
 
-GP::GP(std::unique_ptr<Evaluator> ev, std::shared_ptr<TreeGenerator> gen):
+GP::GP(std::unique_ptr<Evaluator> ev, std::shared_ptr<TreeGenerator> gen, uint max_n_change,
+	double delta):
 	eval(std::move(ev)),
-	generator(std::move(gen))
+	generator(std::move(gen)),
+	max_no_change_iter(max_n_change),
+	delta_max(delta)
 {
 }
 

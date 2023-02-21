@@ -134,6 +134,8 @@ public:
 	std::vector<uint> filterNodesIdexes(std::unique_ptr<NodeFilter> filter);
 
 	std::unique_ptr<IExpressionNode> SubTree(std::unique_ptr<ExpressionTree>& tree, const uint sub_index);
+
+	arma::dmat evaluate(const arma::dmat& thetha, const arma::dmat& phi);
 };
 
 #endif // ! EXPRESSION_TREE_H

@@ -136,6 +136,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bezier.h" />
+    <ClInclude Include="BezierCurvature.h" />
+    <ClInclude Include="BoundaryCondtition.h" />
+    <ClInclude Include="EvaluateCpu.h" />
+    <ClInclude Include="MeshIntersection.h" />
+    <ClInclude Include="MFSCollocation.h" />
+    <ClInclude Include="PeriodicMesh.h" />
+    <ClInclude Include="ProblemHelper.h" />
+    <ClInclude Include="SphereBoundary.h" />
+    <ClInclude Include="StarlikeBoundary.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Bezier.cpp" />
+    <ClCompile Include="BezierCurvature.cpp" />
+    <ClCompile Include="BoundaryCondtition.cpp" />
+    <ClCompile Include="EvaluateCpu.cpp" />
+    <ClCompile Include="MeshIntersection.cpp" />
+    <ClCompile Include="MFSCollocation.cpp" />
+    <ClCompile Include="PeriodicMesh.cpp" />
+    <ClCompile Include="ProblemHelper.cpp" />
+    <ClCompile Include="SphereBoundary.cpp" />
+    <ClCompile Include="StarlikeBoundary.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GP\GP.vcxproj">
+      <Project>{b97cd0b2-5720-4497-a01b-656a133ff192}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

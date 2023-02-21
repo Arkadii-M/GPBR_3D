@@ -26,7 +26,7 @@ arma::dmat BinaryNode::evaluate(const arma::dmat& thetha, const arma::dmat& phi)
 
 std::string BinaryNode::toString() const
 {
-    return std::format("({} {} {})", left->toString(), node_name, right->toString());
+    return std::format("({} .{} {})", left->toString(), node_name, right->toString());
 }
 
 std::unique_ptr<IExpressionNode> BinaryNode::clone()

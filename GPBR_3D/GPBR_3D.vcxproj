@@ -136,8 +136,23 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BREvaluate\BREvaluate.vcxproj">
+      <Project>{ffad085d-367f-4e19-b0b1-001fe7caac6f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GeneticOperators\GeneticOperators.vcxproj">
+      <Project>{1f856b58-f8fa-495a-9dd3-dcb05de7ac90}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\GP\GP.vcxproj">
       <Project>{b97cd0b2-5720-4497-a01b-656a133ff192}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\RmodelGP\RmodelGP.vcxproj">
+      <Project>{687f5b61-0791-4b3b-aa57-e20b62aee07f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SolutionProcessor\SolutionProcessor.vcxproj">
+      <Project>{0d9387bf-46fd-4a1b-9d9f-0396e602dfbf}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\TreeGenerator\TreeGenerator.vcxproj">
+      <Project>{6eb4e126-cab1-45d6-a1df-82f7d6e2e1ee}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

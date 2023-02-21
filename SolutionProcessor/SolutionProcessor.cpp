@@ -1,7 +1,8 @@
 #include "SolutionProcessor.h"
 
-SolutionProcesser::SolutionProcesser(std::string path_to, std::unique_ptr<SolutionPlotter> plotter) :
+SolutionProcesser::SolutionProcesser(std::string path_to, std::unique_ptr<SolutionPlotter> plotter, std::shared_ptr<GpParser> parser) :
 	plotter(std::move(plotter)),
+	parser(parser),
 	main_folder(path_to),
 	path(path_to),
 	plot_on_new_solution(true),
@@ -23,15 +24,24 @@ void SolutionProcesser::appendOne(IterationHistory hist)
 	history.push_back(hist);
 	if (plot_on_new_solution)
 	{
-		if (history.size() == 1 || hist.fitness < history.back().fitness)// first solution
+		if (history.size() == 1 || hist.fitness < (history.end()-2)->fitness)// first solution
 		{
 			plotter->plotToFile(hist.solution, std::format("{}/iteration_{}", (path / PLOTS_FOLDER_NAME).string(), hist.iter));
+			//plotter->plotToFile(hist.solution, std::format("{}/{}/iteration_{}", path.string(), PLOTS_FOLDER_NAME, hist.iter));
+			//std::async(std::launch::async, SolutionPlotter::plotToFileStatic, hist.solution, std::format("{}/{}/iteration_{}", path.string(), PLOTS_FOLDER_NAME, hist.iter));
 		}
 	}
 	if (print_progress)
 		printProgress(hist);
 
 	this->appendToCsv();
+}
+
+void SolutionProcesser::savePopulation(Population& pop)
+{
+	auto population_file = std::ofstream{ path / POPULATION_FILE_NAME,std::ofstream::trunc };
+	population_file << parser->parsePopulationToJson(pop).dump();
+	population_file.close();
 }
 
 void SolutionProcesser::plotOnNewSolution(bool plot)
@@ -51,7 +61,7 @@ void SolutionProcesser::printProgress(const IterationHistory& hist)
 	std::cout << "min fitness: " << hist.fitness << std::endl;
 	std::cout << "Avg fitness: " << hist.avg_fitness << std::endl;
 	std::cout << "Best in iteration:" << std::endl;
-	std::cout << std::format("R: {}\n", hist.solution);
+	std::cout << std::format("R: {}", hist.solution);
 	std::cout << "\n----------------------------------------------------------------------------" << std::endl;
 }
 
@@ -95,8 +105,10 @@ void SolutionProcesser::createStructure()
 		fs::create_directory(plots);
 
 
-
+	// create history file
 	auto f_s_full_hist = std::ofstream{ path / CSV_HISTORY_FULL_FILE_NAME,std::ofstream::trunc };
 	f_s_full_hist << "iteration,population size,fitness,average fitness,solution,iteration time(ms)\n";
 	f_s_full_hist.close();
+
+
 }

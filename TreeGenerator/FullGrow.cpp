@@ -48,7 +48,7 @@ std::unique_ptr<IExpressionNode> FullGrowGenerator::randTree(uint ltc)
 	if (ltc == 0)
 		return createTerminal(ltc);
 
-	if (Random::get<bool>())
+	if (Random::get<bool>(0.5))
 		return createFunctional(ltc);
 
 	if (Random::get<int>(1, terminal_count + functional_count) < functional_count)
@@ -56,55 +56,72 @@ std::unique_ptr<IExpressionNode> FullGrowGenerator::randTree(uint ltc)
 
 	return createTerminal(ltc);
 }
-
 std::unique_ptr<IExpressionNode> FullGrowGenerator::createTerminal(uint ltc)
 {
-	if (Random::get<bool>()) // Create variable
-	{
-		auto vars = data->getVariables();
-		return std::make_unique<VariableNode>(Random::get(vars.begin(), vars.end())->getItem());
-	}
-	auto consts = data->getConstants();
-	return std::make_unique<ConstantNode>(Random::get(consts.begin(), consts.end())->getItem(), data->getEvalNRows(), data->getEvalNCols());
+	return generateTerminal();
 }
 
 std::unique_ptr<IExpressionNode> FullGrowGenerator::createFunctional(uint ltc)
 {
-	if (Random::get<bool>()) // Create unary node
+	if (Random::get<bool>()) // Create unary
 	{
-		auto ufuncs = data->getUnaryFunction();
-		auto ufunc = *Random::get(ufuncs.begin(), ufuncs.end());
-		return std::make_unique<UnaryNode>(ufunc.getItem(), ufunc.getName(), randTree(ltc - 1));
+		auto unary = generateUnary();
+		unary->setLeftSon(randTree(ltc - 1));
+		return unary;
 	}
-
-	auto bfuncs = data->getBinaryFunction();
-	auto bfunc = *Random::get(bfuncs.begin(), bfuncs.end());
-
-	return std::make_unique<BinaryNode>(bfunc.getItem(), bfunc.getName(), randTree(ltc - 1), randTree(ltc - 1));
+	auto binary = generateBinary();
+	binary->setLeftSon(randTree(ltc - 1));
+	binary->setRightSon(randTree(ltc - 1));
+	return binary;
 }
 
-std::unique_ptr<IExpressionNode> FullGrowGenerator::generateTerminal()
-{
-	if (Random::get<bool>()) // Create variable
-	{
-		auto vars = data->getVariables();
-		return std::make_unique<VariableNode>(Random::get(vars.begin(), vars.end())->getItem());
-	}
-	auto consts = data->getConstants();
-	return std::make_unique<ConstantNode>(Random::get(consts.begin(), consts.end())->getItem(), data->getEvalNRows(), data->getEvalNCols());
-}
 
-std::unique_ptr<IExpressionNode> FullGrowGenerator::generateUnary()
-{
-	auto ufuncs = data->getUnaryFunction();
-	auto ufunc = *Random::get(ufuncs.begin(), ufuncs.end());
-	return std::make_unique<UnaryNode>(ufunc.getItem(), ufunc.getName(), nullptr);
-}
-
-std::unique_ptr<IExpressionNode> FullGrowGenerator::generateBinary()
-{
-	auto bfuncs = data->getBinaryFunction();
-	auto bfunc = *Random::get(bfuncs.begin(), bfuncs.end());
-
-	return std::make_unique<BinaryNode>(bfunc.getItem(), bfunc.getName(), nullptr,nullptr);
-}
+//std::unique_ptr<IExpressionNode> FullGrowGenerator::createTerminal(uint ltc)
+//{
+//	double rand = Random::get<double>(0.0, 1.0 - DBL_EPSILON);
+//	if (Random::get<bool>()) // Create variable
+//	{
+//		auto vars = data->getVariables();
+//		auto res = std::find_if(vars.begin(), vars.end(), [&](const GpData::VariableItem& item) {return item.getCumulativeProbability() > rand; });
+//		return std::make_unique<VariableNode>(res->getItem());
+//	}
+//	auto consts = data->getConstants();
+//	auto res = std::find_if(consts.begin(), consts.end(), [&](const GpData::ConstItem& item) {return item.getCumulativeProbability() > rand; });
+//	return std::make_unique<ConstantNode>(res->getItem());
+//
+//
+//	//if (Random::get<bool>()) // Create variable
+//	//{
+//	//	auto vars = data->getVariables();
+//	//	return std::make_unique<VariableNode>(Random::get(vars.begin(), vars.end())->getItem());
+//	//}
+//	//auto consts = data->getConstants();
+//	////return std::make_unique<ConstantNode>(Random::get(consts.begin(), consts.end())->getItem(), data->getEvalNRows(), data->getEvalNCols());
+//	//return std::make_unique<ConstantNode>(Random::get(consts.begin(), consts.end())->getItem());
+//}
+//
+//std::unique_ptr<IExpressionNode> FullGrowGenerator::createFunctional(uint ltc)
+//{
+//	double rand = Random::get<double>(0.0, 1.0-DBL_EPSILON);
+//	if (Random::get<bool>()) // Create unary node
+//	{
+//		auto ufuncs = data->getUnaryFunction();
+//		auto res = std::find_if(ufuncs.begin(), ufuncs.end(), [&](const GpData::UnaryItem& item) {return item.getCumulativeProbability() > rand; });
+//		return std::make_unique<UnaryNode>(res->getItem(), res->getName(), randTree(ltc - 1));
+//	}
+//
+//	auto bfuncs = data->getBinaryFunction();
+//	auto res = std::find_if(bfuncs.begin(), bfuncs.end(), [&](const GpData::BinaryItem& item) {return item.getCumulativeProbability() > rand; });
+//	return std::make_unique<BinaryNode>(res->getItem(), res->getName(), randTree(ltc - 1), randTree(ltc - 1));
+//	//if (Random::get<bool>()) // Create unary node
+//	//{
+//	//	auto ufuncs = data->getUnaryFunction();
+//	//	auto ufunc = *Random::get(ufuncs.begin(), ufuncs.end());
+//	//	return std::make_unique<UnaryNode>(ufunc.getItem(), ufunc.getName(), randTree(ltc - 1));
+//	//}
+//
+//	//auto bfuncs = data->getBinaryFunction();
+//	//auto bfunc = *Random::get(bfuncs.begin(), bfuncs.end());
+//
+//	//return std::make_unique<BinaryNode>(bfunc.getItem(), bfunc.getName(), randTree(ltc - 1), randTree(ltc - 1));
+//}

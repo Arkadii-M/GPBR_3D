@@ -13,20 +13,31 @@
 
 class SolutionPlotter
 {
-	typedef unsigned int uint;
-private:
-	std::unique_ptr<FILE>  pipe;
+public:
 
+	typedef unsigned int uint;
+	enum class SolutionPlotMode{ Both,	Single,	Diff };
+private:
+	//std::unique_ptr<FILE>  pipe;
+	FILE* pipe;
 	const uint n_thetha;
 	const uint n_phi;
 	std::string exact_surface;
 	bool plot_exact;
+	const SolutionPlotMode mode;
+	std::string mode_str;
 public:
 
-	SolutionPlotter(std::string exact_surface, uint n_thetha,uint n_phi);
+	SolutionPlotter(std::string exact_surface, uint n_thetha,uint n_phi, SolutionPlotMode mode);
 	~SolutionPlotter() = default;
 
-	void plotToFile(const std::string G1, const std::string file_name);
+	void plotToFile(const std::string G1_approx, const std::string file_name);
+
+	//static uint s_n_thetha;
+	//static uint s_n_phi;
+	//static std::string s_exact_surface;
+	//static std::string s_mode_str;
+	//static void plotToFileStatic(const std::string G1_approx, const std::string file_name);
 
 
 private:

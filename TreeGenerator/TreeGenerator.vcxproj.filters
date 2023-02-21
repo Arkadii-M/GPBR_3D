@@ -18,9 +18,15 @@
     <ClInclude Include="FullGrow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PTC-1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FullGrow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PTC-1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

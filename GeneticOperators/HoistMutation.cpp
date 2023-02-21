@@ -15,7 +15,7 @@ void HoistMutation::apply(std::weak_ptr<Individuum> individuum)
 	if (tree->getHeight() == 0)
 		return;
 
-	auto nodes_list = tree->filterNodesIdexes(std::make_unique<HoistMutation::Filter>(3));
+	auto nodes_list = tree->filterNodesIdexes(std::make_unique<HoistMutation::Filter>(min_height));
 
 	if (nodes_list.size() == 0)// no node to select
 		return;

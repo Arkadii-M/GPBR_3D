@@ -28,7 +28,7 @@ private:
 	const arma::uword n_rows;
 	const arma::uword n_cols;
 public:
-	GpData(Bset bfuncs, Uset ufuncs, Vset vars, Cset consts, arma::uword n_rows, arma::uword n_cols);
+	GpData(Bset bfuncs, Uset ufuncs, Vset vars, Cset consts, arma::uword n_rows = 0, arma::uword n_cols = 0);
 
 	Bset getBinaryFunction() const;
 	Uset getUnaryFunction() const;

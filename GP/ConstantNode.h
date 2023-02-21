@@ -10,9 +10,10 @@ class ConstantNode : public IExpressionNode
 {
 private:
 	const double value;
-	const arma::dmat ConstMatrix;
+	//const arma::dmat ConstMatrix;
 public:
-	ConstantNode(double value,arma::uword n_row,arma::uword n_col);
+	//ConstantNode(double value,arma::uword n_row,arma::uword n_col);
+	ConstantNode(double value);
 	ConstantNode(const ConstantNode& node);
 
 	// Inherited via IExpressionNode

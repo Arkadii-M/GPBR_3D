@@ -42,8 +42,8 @@ public:
 	std::unique_ptr<IExpressionNode>& getLeftSon();
 	std::unique_ptr<IExpressionNode>& getRightSon();
 
-	void setLeftSon(std::unique_ptr<IExpressionNode>& rhs);
-	void setRightSon(std::unique_ptr<IExpressionNode>& rhs);
+	void setLeftSon(std::unique_ptr<IExpressionNode> rhs);
+	void setRightSon(std::unique_ptr<IExpressionNode> rhs);
 
 	// evaluete the tree expression
 	virtual arma::dmat evaluate(const arma::dmat& thetha, const arma::dmat& phi) = 0;

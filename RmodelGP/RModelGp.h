@@ -33,7 +33,9 @@ public:
 		std::unique_ptr<RModelSelector> select,
 		std::vector<std::unique_ptr< GeneticOpretator>>& mut_operators,
 		std::vector<std::unique_ptr< GeneticOpretator>>& cross_operators,
-		std::unique_ptr<SolutionProcesser> processor
+		std::unique_ptr<SolutionProcesser> processor,
+		uint max_n_change,
+		double delta
 	);
 
 	virtual bool execute(uint iter) override;
