@@ -11,6 +11,14 @@ private:
 	const double select_proba;
 	double cumulative_prob;
 public:
+	GpItem():
+		item(nullptr),
+		name(""),
+		select_proba(-1.0),
+		cumulative_prob(-1.0)
+	{
+
+	}
 	GpItem(Type item, std::string name, double prob) :
 		item(item),
 		name(name),

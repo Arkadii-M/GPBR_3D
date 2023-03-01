@@ -47,11 +47,7 @@ SphereBoundary ProblemHelper::getGamma2() const
 arma::Mat<double> ProblemHelper::formMatrix(const arma::dcube& G1_boundary, const arma::dcube& G1_sources)
 {
 	int n_collocation = boundary_collocation.getN();
-
 	int n_sources = sources_collocation.getN();
-
-	auto coll_thetha = boundary_collocation.getThetha();
-	auto coll_phi = boundary_collocation.getPhi();
 
 	arma::Mat<double> res = arma::Mat<double>(2 * n_collocation, n_sources, arma::fill::ones);
 
@@ -161,9 +157,6 @@ arma::dcube ProblemHelper::formSourcesRepeate(const arma::dcube& G1_sources, con
 	//int n_collocation = boundary_collocation.getN();
 	int n_sources = sources_collocation.getN();
 
-	auto sources_thetha = sources_collocation.getThetha();
-	auto sources_phi = sources_collocation.getPhi();
-
 	//auto G2_vals = Gamma2(sources_thetha, sources_phi);
 	auto G2_vals = G2sources;
 
@@ -212,12 +205,17 @@ arma::dcolvec ProblemHelper::uApprox(const arma::dcolvec& lambda, const arma::dc
 
 double ProblemHelper::l2Norm(const arma::dcube& G1_boundary, const arma::dcube& G1_sources)
 {
-	arma::dcolvec lambda = arma::solve(formMatrix(G1_boundary, G1_sources), formColumn(G1_boundary), arma::solve_opts::force_approx);
+	//arma::dcolvec lambda = arma::solve(formMatrix(G1_boundary, G1_sources), formColumn(G1_boundary), arma::solve_opts::force_approx);
+	auto A = formMatrix(G1_boundary, G1_sources);
+	auto B = formColumn(G1_boundary);
+	double cond_A = arma::cond(A);
+	//arma::dcolvec lambda = arma::solve(A.t()*A, A.t() * B, arma::solve_opts::force_approx);
+	arma::dcolvec lambda = arma::solve(A,B, arma::solve_opts::no_approx);
 
 	int n_collocation = boundary_collocation.getN();
 
-	auto coll_thetha = boundary_collocation.getThetha();
-	auto coll_phi = boundary_collocation.getPhi();
+	//auto coll_thetha = boundary_collocation.getThetha();
+	//auto coll_phi = boundary_collocation.getPhi();
 
 	//auto G2_vals = Gamma2(coll_thetha, coll_phi);
 	//auto G2_vals = G2boundary;
@@ -227,6 +225,39 @@ double ProblemHelper::l2Norm(const arma::dcube& G1_boundary, const arma::dcube& 
 	arma::dcolvec f_vals = Gamma2TestCond(G2boundary);
 
 	return sqrt(sum(pow(u - f_vals, 2)));
+}
+
+bool ProblemHelper::l2Norm(const arma::dcube& G1_boundary, const arma::dcube& G1_sources, double& res)
+{
+
+	arma::dcolvec lambda;
+	//auto A = formMatrix(G1_boundary, G1_sources);
+	//if (arma::cond(A) > 10e2)
+	//{
+	//	return false;
+	//}
+	bool status = arma::solve(lambda,formMatrix(G1_boundary, G1_sources), formColumn(G1_boundary), arma::solve_opts::no_approx);
+	if (!status)
+		return false;
+
+	//auto A = formMatrix(G1_boundary, G1_sources);
+	//auto B = formColumn(G1_boundary);
+	//arma::dcolvec lambda = arma::solve(A.t() * A, A.t() * B, arma::solve_opts::force_approx);
+
+	int n_collocation = boundary_collocation.getN();
+
+	//auto coll_thetha = boundary_collocation.getThetha();
+	//auto coll_phi = boundary_collocation.getPhi();
+
+	//auto G2_vals = Gamma2(coll_thetha, coll_phi);
+	//auto G2_vals = G2boundary;
+
+	arma::dcolvec u = uApprox(lambda, G2boundary, G1_sources);
+
+	arma::dcolvec f_vals = Gamma2TestCond(G2boundary);
+
+	res= sqrt(sum(pow(u - f_vals, 2)));
+	return true;
 }
 
 const MFSCollocation ProblemHelper::getCollocation() const

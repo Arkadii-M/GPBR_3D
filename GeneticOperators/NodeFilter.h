@@ -57,13 +57,26 @@ struct IsBinary
 
 struct IsNumber
 {
-	inline bool isNumber(const std::string& s) {
-		return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
-	}
+	//inline bool isNumber(const std::string& s) {
+	//	return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
+	//}
 
+	//bool operator()(const std::unique_ptr<IExpressionNode>& node)
+	//{
+	//	return isNumber(node->getName());
+	//}
 	bool operator()(const std::unique_ptr<IExpressionNode>& node)
 	{
-		return isNumber(node->getName());
+		// TODO: CNAGE
+		try
+		{
+			std::stod(node->getName());
+		}
+		catch (...)
+		{
+			return false;
+		}
+		return true;
 	}
 };
 

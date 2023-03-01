@@ -16,6 +16,7 @@ private:
 	uint max_height;
 	uint terminal_count;
 	uint functional_count;
+	uint curr_height;
 public:
 	FullGrowGenerator(std::shared_ptr<GpData>& dat, uint min_h, uint max_h);
 
@@ -35,10 +36,10 @@ public:
 	virtual std::unique_ptr<IExpressionNode> generateSubTree(uint max_h, uint min_h) override;
 
 private:
-	std::unique_ptr<IExpressionNode> randTree(uint ltc);
+	std::unique_ptr<IExpressionNode> randTree(uint ltc,uint curr_h);
 
-	std::unique_ptr<IExpressionNode> createTerminal(uint ltc);
-	std::unique_ptr<IExpressionNode> createFunctional(uint ltc);
+	std::unique_ptr<IExpressionNode> createTerminal(uint ltc, uint curr_h);
+	std::unique_ptr<IExpressionNode> createFunctional(uint ltc, uint curr_h);
 
 };
 

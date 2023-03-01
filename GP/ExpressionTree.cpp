@@ -539,6 +539,25 @@ bool ExpressionTree::NodeObserve::isLeaf() const
 	return current->isLeaf();
 }
 
+bool ExpressionTree::NodeObserve::isVariable() const
+{
+	auto name = current->getName();
+	return name == "thetha" || name == "phi";//TODO: CHANGE
+}
+bool ExpressionTree::NodeObserve::isConstant() const
+{
+	// TODO: CNAGE
+	try
+	{
+		std::stod(current->getName());
+	}
+	catch (...)
+	{
+		return false;
+	}
+	return true;
+}
+
 bool ExpressionTree::NodeObserve::isUnary() const
 {
 	return current->getLeftSon() && !current->getRightSon();

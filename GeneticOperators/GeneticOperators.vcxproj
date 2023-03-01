@@ -137,6 +137,7 @@
     <ClInclude Include="NodeFilter.h" />
     <ClInclude Include="NodeReplaceMutation.h" />
     <ClInclude Include="OnePointCrossover.h" />
+    <ClInclude Include="ScaleMutation.h" />
     <ClInclude Include="ShrinkMutatation.h" />
     <ClInclude Include="SwapMutation.h" />
     <ClInclude Include="TerminalMutation.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="HoistMutation.cpp" />
     <ClCompile Include="NodeReplaceMutation.cpp" />
     <ClCompile Include="OnePointCrossover.cpp" />
+    <ClCompile Include="ScaleMutation.cpp" />
     <ClCompile Include="ShrinkMutatation.cpp" />
     <ClCompile Include="SwapMutation.cpp" />
     <ClCompile Include="TerminalMutation.cpp" />

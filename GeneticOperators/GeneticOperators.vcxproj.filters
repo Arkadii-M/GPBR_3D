@@ -57,6 +57,9 @@
     <ClInclude Include="ConstMutation.h">
       <Filter>Header Files\Mutation</Filter>
     </ClInclude>
+    <ClInclude Include="ScaleMutation.h">
+      <Filter>Header Files\Mutation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HoistMutation.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files\Crossover</Filter>
     </ClCompile>
     <ClCompile Include="ConstMutation.cpp">
+      <Filter>Source Files\Mutation</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleMutation.cpp">
       <Filter>Source Files\Mutation</Filter>
     </ClCompile>
   </ItemGroup>

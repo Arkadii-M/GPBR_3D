@@ -45,6 +45,7 @@ public:
 	arma::dcolvec formColumn(const arma::dcube& G1_boundary);
 	arma::dcolvec uApprox(const arma::dcolvec& lambda, const arma::dcube& X, const  arma::dcube& G1_sources);
 	double l2Norm(const arma::dcube& G1_boundary, const arma::dcube& G1_sources);
+	bool l2Norm(const arma::dcube& G1_boundary, const arma::dcube& G1_sources,double & res);
 	const MFSCollocation getCollocation() const;
 
 

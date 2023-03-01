@@ -7,10 +7,12 @@ RmodelGp::RmodelGp(std::unique_ptr<Evaluator> ev,
     std::vector<std::unique_ptr<GeneticOpretator>>& cross_operators,
 	std::unique_ptr<SolutionProcesser> processor,
 	uint max_n_change,
+	uint refresh_no_change,
 	double delta):
     GP(std::move(ev), gen,max_n_change,delta),
     selector(std::move(select)),
-	processor(std::move(processor))
+	processor(std::move(processor)),
+	refresh_num_iter(refresh_no_change)
 {
 	mutate_operators = std::vector<std::unique_ptr<GeneticOpretator>>(0);
 	crossove_operators = std::vector<std::unique_ptr<GeneticOpretator>>(0);
@@ -67,6 +69,7 @@ RmodelGp::RmodelGp(std::unique_ptr<Evaluator> ev,
 bool RmodelGp::execute(uint iter)
 {
 	uint no_change_iter = 0;
+	uint refresh_no_change = 0;
 	double last_error = -1.0;
 	double curr_error = 0.0;
 
@@ -89,20 +92,32 @@ bool RmodelGp::execute(uint iter)
 			.time_ms = duration
 			});
 
-		if (i % 5)
+		if (i % 100 == 0)
 		{
 			processor->savePopulation(population);
 		}
 
 		curr_error = best.lock()->getFintness();
 		if (curr_error < delta_max)
-			return true;
+			break;
 
 		if (curr_error < last_error)
+		{
 			no_change_iter = 0;
+			refresh_no_change = 0;
+		}
 		else
+		{
 			if (++no_change_iter >= max_no_change_iter)
-				return false;
+				break;
+			refresh_no_change++;
+		}
+
+		if (refresh_no_change >= refresh_num_iter)
+		{
+			refreshPopulation();
+			refresh_no_change = 0;
+		}
 
 		last_error = curr_error;
 	}
@@ -176,4 +191,25 @@ void RmodelGp::executeOne()
 void RmodelGp::evaluatePopulation()
 {
 	eval->evaluatePopulation(population);
+}
+
+void RmodelGp::refreshPopulation()
+{
+	auto first_best = population.getNBestByDelta(1.0);
+	for (auto& ind : first_best)
+	{
+		ind.lock()->setCalculated(false);
+		double r = Random::get<double>(0.0, 1.0-DBL_EPSILON);
+
+		for (auto& mut_sel : mutate_cumulative)
+		{
+			if (r < mut_sel.first)
+			{
+				this->mutate_operators.at(mut_sel.second)->apply(ind);
+				break;
+			}
+		}
+	}
+	this->evaluatePopulation();
+	//auto check_best = population.getNBest(population.popSize());
 }

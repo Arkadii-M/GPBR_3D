@@ -7,7 +7,8 @@ FullGrowGenerator::FullGrowGenerator(std::shared_ptr<GpData>& dat, uint min_h, u
 	min_height(min_h),
 	max_height(max_h),
 	terminal_count(0),
-	functional_count(0)
+	functional_count(0),
+	curr_height(0)
 {
 	terminal_count = data->getConstants().size() + data->getVariables().size();
 	functional_count = data->getBinaryFunction().size() + data->getUnaryFunction().size();
@@ -20,7 +21,8 @@ std::unique_ptr<ExpressionTree> FullGrowGenerator::generateTree()
 
 std::unique_ptr<ExpressionTree> FullGrowGenerator::generateTree(uint h)
 {
-	return std::make_unique<ExpressionTree>(randTree(h));
+	curr_height = 0;
+	return std::make_unique<ExpressionTree>(randTree(h,0));
 }
 
 std::unique_ptr<ExpressionTree> FullGrowGenerator::generateTree(uint max_h, uint min_h)
@@ -35,7 +37,8 @@ std::unique_ptr<IExpressionNode> FullGrowGenerator::generateSubTree()
 
 std::unique_ptr<IExpressionNode> FullGrowGenerator::generateSubTree(uint h)
 {
-	return randTree(h);
+	curr_height = 0;
+	return randTree(h, 0);
 }
 
 std::unique_ptr<IExpressionNode> FullGrowGenerator::generateSubTree(uint max_h, uint min_h)
@@ -43,35 +46,40 @@ std::unique_ptr<IExpressionNode> FullGrowGenerator::generateSubTree(uint max_h, 
 	return generateSubTree(Random::get<uint>(min_h, max_h));
 }
 
-std::unique_ptr<IExpressionNode> FullGrowGenerator::randTree(uint ltc)
+std::unique_ptr<IExpressionNode> FullGrowGenerator::randTree(uint ltc, uint curr_h)
 {
 	if (ltc == 0)
-		return createTerminal(ltc);
+		return createTerminal(ltc, curr_h);
 
 	if (Random::get<bool>(0.5))
-		return createFunctional(ltc);
+		return createFunctional(ltc, curr_h);
 
 	if (Random::get<int>(1, terminal_count + functional_count) < functional_count)
-		return createFunctional(ltc);
+		return createFunctional(ltc, curr_h);
 
-	return createTerminal(ltc);
+	if(curr_height < min_height)
+		return createFunctional(ltc, curr_h);
+
+	return createTerminal(ltc, curr_h);
 }
-std::unique_ptr<IExpressionNode> FullGrowGenerator::createTerminal(uint ltc)
+std::unique_ptr<IExpressionNode> FullGrowGenerator::createTerminal(uint ltc, uint curr_h)
 {
+	curr_height = std::max(curr_height, curr_h);
 	return generateTerminal();
 }
 
-std::unique_ptr<IExpressionNode> FullGrowGenerator::createFunctional(uint ltc)
+std::unique_ptr<IExpressionNode> FullGrowGenerator::createFunctional(uint ltc, uint curr_h)
 {
+	curr_height = std::max(curr_height, curr_h+1);
 	if (Random::get<bool>()) // Create unary
 	{
 		auto unary = generateUnary();
-		unary->setLeftSon(randTree(ltc - 1));
+		unary->setLeftSon(randTree(ltc - 1, curr_h + 1));
 		return unary;
 	}
 	auto binary = generateBinary();
-	binary->setLeftSon(randTree(ltc - 1));
-	binary->setRightSon(randTree(ltc - 1));
+	binary->setLeftSon(randTree(ltc - 1, curr_h + 1));
+	binary->setRightSon(randTree(ltc - 1, curr_h + 1));
 	return binary;
 }
 

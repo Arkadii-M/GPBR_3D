@@ -28,6 +28,9 @@ public:
 	std::weak_ptr<Individuum> getAt(uint pos);
 
 	std::weak_ptr<Individuum> getBest(); // Get element with min fitness
+	std::vector<std::weak_ptr<Individuum>> getNBest(uint n_best); // Get n elements with min fitness
+	std::vector<std::weak_ptr<Individuum>> getNBestByDelta(const double delta); // Get elements wich fitness is in delta range
+	void keepNBest(uint n_best);
 
 	double bestFitness();
 	double avgFitness();

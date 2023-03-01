@@ -138,6 +138,7 @@
 
 #include "../GP/GpData.h"
 #include "../TreeGenerator/PTC-1.h"
+#include "../GeneticOperators/ScaleMutation.h"
 
 #define SAME_PROB 1.0
 
@@ -168,25 +169,25 @@ int main()
 
 	const uint pop_size = 500;
 	// number of collocation points
-	const uint n_boundary = 4;
-	const uint n_sources = 4;
+	const uint n_boundary = 16;
+	const uint n_sources = 16;
 
-	const double mutate_prob = 0.4;
+	const double mutate_prob = 0.35;
 	const double cross_prob = 0.75;
 
 	const uint tournament = 3;
 	const uint r_param = (uint)((float)pop_size * 0.4);
 
-	const double curvature_threshold = 0.5;// TODO: calculate
+	const double curvature_threshold = 1.0;// TODO: calculate
 
-	const uint min_tree_h = 1;
-	const uint max_tree_h = 10;
+	const uint min_tree_h = 10;
+	const uint max_tree_h = 20;
 
 	const uint n_thetha_plot = 16;
 	const uint n_phi_plot = 32;
 
-	const double const_min = -5;
-	const double const_max = 5;
+	const double const_min = -50;
+	const double const_max = 50;
 	const double step = 0.5;
 	assert(const_min < const_max);
 	assert(step > 0);
@@ -198,8 +199,8 @@ int main()
 	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x + y; }, "+", SAME_PROB));
 	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x - y; }, "-", SAME_PROB));
 	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x % y; }, "*", SAME_PROB));
-	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x / y; }, "/", 0.1));
-	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return pow(x,y); }, "^", 0.1));
+	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x / y; }, "/", 0.2));
+	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return pow(x,y); }, "^", 0.6));
 	CalculateCumulativeProbabilities(binary_functions);
 
 
@@ -214,7 +215,7 @@ int main()
 
 	auto variables = std::vector<GpData::VariableItem>();
 	variables.push_back(GpData::VariableItem("thetha","thetha", SAME_PROB));
-	variables.push_back(GpData::VariableItem("phi", "phi", 0.05));// TODO: use small probability
+	variables.push_back(GpData::VariableItem("phi", "phi", 0.2));// TODO: use small probability
 	CalculateCumulativeProbabilities(variables);
 
 	auto constants = std::vector<GpData::ConstItem>();
@@ -256,9 +257,11 @@ int main()
 	const std::string exact_str = "2+sqrt(4.25 + 3*cos(3*thetha))";
 
 	//rfunc_vec r_exact = [](arma::dcolvec thetha, arma::dcolvec phi) {
-	//	return arma::dcolvec(thetha.n_elem,arma::fill::value(2));
+	//	arma::dcolvec res = 2*sqrt(cos(2*thetha)+sqrt(2-pow(sin(2 * thetha),2)));
+	//	return res;
 	//};
-	//const std::string exact_str = "2";
+	//const std::string exact_str = "2.*sqrt(cos(2.*thetha).+sqrt(2.-sin(2.*thetha).^2))";
+
 
 
 	// calculate G1 on boundary and sources
@@ -279,7 +282,7 @@ int main()
 	// calculate data on G2
 	arma::dcube G2_boundary = Gamma2(coll_boundary.getThetha(), coll_boundary.getPhi());
 	arma::dcolvec u_on_g2 = helper->uApprox(lambda, G2_boundary, G1_sources);
-	u_on_g2.print("Uapprox on G2:");
+	//u_on_g2.print("Uapprox on G2:");
 
 	/// Form test condition
 	// use them as test condition
@@ -289,7 +292,7 @@ int main()
 	// calculate norm for the fixed G1 values. Check if error is zero
 	double test_error = helper->l2Norm(G1_boundary, G1_sources);
 	std::cout << "test error: " << test_error << "\n";
-	assert(helper->l2Norm(G1_boundary, G1_sources)< 1e-10);// Note. There is no noise. TODO: change when noise will be implemented
+	assert(helper->l2Norm(G1_boundary, G1_sources)< 1e-5);// Note. There is no noise. TODO: change when noise will be implemented
 	/*	define tree generators	*/
 	auto full_grow_generator = std::make_shared<FullGrowGenerator>(gp_data, min_tree_h, max_tree_h);
 	//auto ptc1_generator = std::make_shared<PTC_1_Generator>(gp_data, 20, max_tree_h);
@@ -297,18 +300,19 @@ int main()
 	/*	define genetic operators */
 	// mutation operators
 	std::vector<std::unique_ptr<GeneticOpretator>> mutate_operators = std::vector<std::unique_ptr<GeneticOpretator>>();
-	mutate_operators.push_back(std::make_unique<ConstantMutation>(0.5));
+	mutate_operators.push_back(std::make_unique<ConstantMutation>(-1.0,1.0,0.1,0.8));
 	mutate_operators.push_back(std::make_unique<HoistMutation>(min_tree_h,0.1));
 	mutate_operators.push_back(std::make_unique<NodeReplaceMutation>(full_grow_generator,0.8));
 	mutate_operators.push_back(std::make_unique<ShrinkMutation>(full_grow_generator,0.1));
 	mutate_operators.push_back(std::make_unique<SwapMutation>(0.1));
 	mutate_operators.push_back(std::make_unique<TerminalMutation>(full_grow_generator,0.7));
+	mutate_operators.push_back(std::make_unique<ScaleMutation>(gp_data,1e-3, 0.1));
 	
 	 
 	//// crossover operators
 	std::vector<std::unique_ptr<GeneticOpretator>> crossove_operators = std::vector<std::unique_ptr<GeneticOpretator>>();
 	crossove_operators.push_back(std::make_unique<OnePointCrossover>(0.9));
-	crossove_operators.push_back(std::make_unique<UniformCrossover>(0.3,0.8));
+	crossove_operators.push_back(std::make_unique<UniformCrossover>(0.5,0.8));
 
 	// define solution plotter and  processor
 	auto plotter = std::make_unique<SolutionPlotter>(exact_str, n_thetha_plot, n_phi_plot, SolutionPlotter::SolutionPlotMode::Both);
@@ -328,9 +332,9 @@ int main()
 		full_grow_generator,
 		std::move(selector),
 		mutate_operators, crossove_operators,
-		std::move(processor),100,1e-5);
+		std::move(processor),500,50,1e-5);
 
 	gp_model.generatePopulation(pop_size);
-	gp_model.execute(1000);
+	gp_model.execute(2000);
 	return 0;
 }

@@ -20,6 +20,8 @@ private:
 	std::unique_ptr<RModelSelector> selector;
 	std::unique_ptr<SolutionProcesser> processor;
 
+	const uint refresh_num_iter;
+
 public:
 	//RmodelGp(std::unique_ptr<Evaluator> ev,
 	//	std::shared_ptr<TreeGenerator> gen,
@@ -35,6 +37,7 @@ public:
 		std::vector<std::unique_ptr< GeneticOpretator>>& cross_operators,
 		std::unique_ptr<SolutionProcesser> processor,
 		uint max_n_change,
+		uint refresh_no_change,
 		double delta
 	);
 
@@ -45,6 +48,7 @@ public:
 private:
 	void executeOne();
 	void evaluatePopulation();
+	void refreshPopulation();
 };
 
 #endif //R_MODEL_GP_H

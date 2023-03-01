@@ -66,6 +66,38 @@ std::weak_ptr<Individuum> Population::getBest()
 	return *std::min_element(population.begin(), population.end(), Individuum::cmp_weak);
 }
 
+std::vector<std::weak_ptr<Individuum>> Population::getNBest(uint n_best)
+{
+	// sort
+	std::sort(population.begin(), population.end(), Individuum::cmp_weak);
+
+	return std::vector<std::weak_ptr<Individuum>>(population.begin(),std::next(population.begin(),n_best));
+}
+
+std::vector<std::weak_ptr<Individuum>> Population::getNBestByDelta(const double delta)
+{
+	// sort
+	std::sort(population.begin(), population.end(), Individuum::cmp_weak);
+
+	const double best_error = getBest().lock()->getFintness();
+
+	auto last_it = std::find_if_not(population.begin(), population.end(), [&](const std::weak_ptr<Individuum>& ind) 
+		{
+			return abs(best_error - ind.lock()->getFintness()) < delta;
+		});
+
+	return std::vector<std::weak_ptr<Individuum>>(population.begin(), last_it);
+}
+
+void Population::keepNBest(uint n_best)
+{
+	// sort
+	std::sort(population.begin(), population.end(),Individuum::cmp_weak);
+	// keep first n
+	population.erase(std::next(population.begin(),n_best), std::prev(population.end()));
+	int ps = population.size();
+
+}
 double Population::bestFitness()
 {
 	return getBest().lock()->getFintness();

@@ -12,10 +12,11 @@ using Random = effolkronium::random_static;
 class ConstantMutation :public GeneticOpretator // Select and return random subtree
 {
 private:
-	const arma::uword n_rows;
-	const arma::uword n_cols;
+	const double a;
+	const double b;
+	const double scale;
 public:
-	ConstantMutation(arma::uword n_rows=0, arma::uword n_cols=0,double prob = 1.0);
+	ConstantMutation(double a,double b, double scale,double prob = 1.0);
 	virtual void apply(std::weak_ptr<Individuum> individuum) override;
 
 private:

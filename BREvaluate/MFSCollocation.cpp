@@ -28,18 +28,10 @@ Collocation MFSCollocation::getSourcesCyclic() const
 
 void MFSCollocation::formLinspaceCollocation(uint n_theta, uint n_phi)
 {
-	arma::dcolvec thethas = arma::dcolvec(n_theta);
-	arma::dcolvec thethas_cycle = arma::dcolvec(n_theta + 1);
-	for (uint i = 0; i < n_theta; ++i)
-	{
-		thethas(i) = (arma::datum::pi / (double)n_theta) * (double)i;
-	}
-	thethas_cycle(arma::span(0, n_theta - 1)) = thethas;
-	thethas_cycle(n_theta) = arma::datum::pi;
+	arma::dcolvec thethas = arma::linspace(0,arma::datum::pi,n_theta); // thetha in [0,pi]
 
-
-	arma::dcolvec phis = arma::dcolvec(n_phi);
-	arma::dcolvec phis_cycle = arma::dcolvec(n_phi + 1);
+	arma::dcolvec phis = arma::dcolvec(n_phi); // [0,2*pi)
+	arma::dcolvec phis_cycle = arma::dcolvec(n_phi + 1);// [0,2*pi]
 	for (uint i = 0; i < n_phi; ++i)
 	{
 		phis(i) = (2 * arma::datum::pi / (double)n_phi) * (double)i;
@@ -48,24 +40,15 @@ void MFSCollocation::formLinspaceCollocation(uint n_theta, uint n_phi)
 	phis_cycle(n_phi) = 2 * arma::datum::pi;
 
 	this->boundary = Collocation(thethas, phis);
-
-	this->boundary_cyclyc = Collocation(thethas_cycle, phis_cycle);
+	this->boundary_cyclyc = Collocation(thethas, phis_cycle);
 }
 
 void MFSCollocation::formLinspaceSources(uint n_theta, uint n_phi)
 {
-	arma::dcolvec thethas = arma::dcolvec(n_theta);
-	arma::dcolvec thethas_cycle = arma::dcolvec(n_theta + 1);
-	for (uint i = 0; i < n_theta; ++i)
-	{
-		thethas(i) = (arma::datum::pi / (double)n_theta) * (double)i;
-	}
-	thethas_cycle(arma::span(0, n_theta - 1)) = thethas;
-	thethas_cycle(n_theta) = arma::datum::pi;
+	arma::dcolvec thethas = arma::linspace(0, arma::datum::pi, n_theta); // thetha in [0,pi]
 
-
-	arma::dcolvec phis = arma::dcolvec(n_phi);
-	arma::dcolvec phis_cycle = arma::dcolvec(n_phi + 1);
+	arma::dcolvec phis = arma::dcolvec(n_phi); // [0,2*pi)
+	arma::dcolvec phis_cycle = arma::dcolvec(n_phi + 1);// [0,2*pi]
 	for (uint i = 0; i < n_phi; ++i)
 	{
 		phis(i) = (2 * arma::datum::pi / (double)n_phi) * (double)i;
@@ -74,7 +57,6 @@ void MFSCollocation::formLinspaceSources(uint n_theta, uint n_phi)
 	phis_cycle(n_phi) = 2 * arma::datum::pi;
 
 	this->sources = Collocation(thethas, phis);
-
-	this->sources_cyclyc = Collocation(thethas_cycle, phis_cycle);
+	this->sources_cyclyc = Collocation(thethas, phis_cycle);
 }
 

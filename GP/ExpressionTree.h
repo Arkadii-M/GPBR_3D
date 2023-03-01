@@ -5,6 +5,7 @@ typedef unsigned int uint;
 #include <memory>
 #include <algorithm>
 #include <iterator>
+#include <variant>
 
 #include "IExpressionNode.h"
 #include "TempNode.h"
@@ -27,6 +28,8 @@ public:
 		std::unique_ptr<NodeObserve> getLeft() const;
 		std::unique_ptr<NodeObserve> getRight() const;
 		bool isLeaf() const;
+		bool isVariable() const;
+		bool isConstant() const;
 		bool isUnary() const;
 		bool isBinary() const;
 		bool isNull() const;
