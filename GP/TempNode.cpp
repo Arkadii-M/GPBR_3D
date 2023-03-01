@@ -21,3 +21,8 @@ std::string TempNode::toString() const
 {
     return "temp";
 }
+
+TreeDerivative TempNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo)
+{
+    throw std::logic_error("Temp node can't be evaluated");
+}

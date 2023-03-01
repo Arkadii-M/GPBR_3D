@@ -43,6 +43,7 @@ void ScaleMutation::apply(std::weak_ptr<Individuum> individuum)
 	auto new_tree = std::make_unique<ExpressionTree>(
 		std::make_unique<BinaryNode>(
 			multiply_item.getItem(),
+			multiply_item.getDerivative(),
 			multiply_item.getName(),
 			std::make_unique<TempNode>(),
 			std::make_unique<ConstantNode>(rand_value)));

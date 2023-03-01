@@ -40,7 +40,7 @@ std::unique_ptr<IExpressionNode> TreeGenerator::generateUnary()
 	double rand = Random::get<double>(0.0, 1.0 - DBL_EPSILON);
 	auto ufuncs = data->getUnaryFunction();
 	auto res = std::find_if(ufuncs.begin(), ufuncs.end(), [&](const GpData::UnaryItem& item) {return item.getCumulativeProbability() > rand; });
-	return std::make_unique<UnaryNode>(res->getItem(), res->getName(), nullptr);
+	return std::make_unique<UnaryNode>(res->getItem(),res->getDerivative(), res->getName(), nullptr);
 }
 
 std::unique_ptr<IExpressionNode> TreeGenerator::generateBinary()
@@ -48,5 +48,5 @@ std::unique_ptr<IExpressionNode> TreeGenerator::generateBinary()
 	double rand = Random::get<double>(0.0, 1.0 - DBL_EPSILON);
 	auto bfuncs = data->getBinaryFunction();
 	auto res = std::find_if(bfuncs.begin(), bfuncs.end(), [&](const GpData::BinaryItem& item) {return item.getCumulativeProbability() > rand; });
-	return std::make_unique<BinaryNode>(res->getItem(), res->getName(), nullptr, nullptr);
+	return std::make_unique<BinaryNode>(res->getItem(),res->getDerivative(), res->getName(), nullptr, nullptr);
 }

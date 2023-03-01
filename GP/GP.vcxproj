@@ -146,6 +146,7 @@
     <ClInclude Include="IExpressionNode.h" />
     <ClInclude Include="Individuum.h" />
     <ClInclude Include="GpParser.h" />
+    <ClInclude Include="PartialTreeDerivative.h" />
     <ClInclude Include="Population.h" />
     <ClInclude Include="random.hpp" />
     <ClInclude Include="SaveLoad.h" />
@@ -166,6 +167,7 @@
     <ClCompile Include="GpParser.cpp" />
     <ClCompile Include="IExpressionNode.cpp" />
     <ClCompile Include="Individuum.cpp" />
+    <ClCompile Include="PartialTreeDerivative.cpp" />
     <ClCompile Include="Population.cpp" />
     <ClCompile Include="TempNode.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />

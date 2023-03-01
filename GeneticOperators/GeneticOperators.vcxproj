@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BackPropagationMutation.h" />
     <ClInclude Include="ConstMutation.h" />
     <ClInclude Include="HoistMutation.h" />
     <ClInclude Include="NodeFilter.h" />

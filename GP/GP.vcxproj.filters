@@ -102,6 +102,9 @@
     <ClInclude Include="GpItemDerivative.h">
       <Filter>Header Files\GP\Data</Filter>
     </ClInclude>
+    <ClInclude Include="PartialTreeDerivative.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ExpressionTree.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="UnaryNode.cpp">
       <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="PartialTreeDerivative.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

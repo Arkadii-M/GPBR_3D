@@ -40,3 +40,15 @@ std::unique_ptr<IExpressionNode> ConstantNode::clone()
 {
     return std::make_unique<ConstantNode>(*this);
 }
+
+TreeDerivative ConstantNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo)
+{
+    auto eval = evaluate(thetha, phi);
+    if (dinfo.inDiffIdArray(this->order_number))
+    {
+        auto ones = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::ones);
+        return TreeDerivative(eval,ones);
+    }
+    auto zeros = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::zeros);
+    return TreeDerivative(eval, zeros);
+}

@@ -60,6 +60,9 @@
     <ClInclude Include="ScaleMutation.h">
       <Filter>Header Files\Mutation</Filter>
     </ClInclude>
+    <ClInclude Include="BackPropagationMutation.h">
+      <Filter>Source Files\Mutation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HoistMutation.cpp">

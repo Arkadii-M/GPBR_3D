@@ -56,7 +56,7 @@ std::unique_ptr<IExpressionNode> GpParser::parseJsonToSubTree(json subtree)
 		if (ufunc == Ufuncs.end())
 			throw std::invalid_argument(std::format("No unary function with name {} found in set", (std::string)name));
 
-		return std::make_unique<UnaryNode>(ufunc->getItem(), (std::string)name, parseJsonToSubTree(left));
+		return std::make_unique<UnaryNode>(ufunc->getItem(), ufunc->getDerivative(), (std::string)name, parseJsonToSubTree(left));
 	}
 	//Binary function
 	auto Bfuncs = data->getBinaryFunction();
@@ -69,7 +69,7 @@ std::unique_ptr<IExpressionNode> GpParser::parseJsonToSubTree(json subtree)
 	if (bfunc == Bfuncs.end())
 		throw std::invalid_argument(std::format("No binary function with name {} found in set", (std::string)name));
 
-	return std::make_unique<BinaryNode>(bfunc->getItem(), (std::string)name, parseJsonToSubTree(left), parseJsonToSubTree(right));
+	return std::make_unique<BinaryNode>(bfunc->getItem(), bfunc->getDerivative(),(std::string)name, parseJsonToSubTree(left), parseJsonToSubTree(right));
 }
 
 

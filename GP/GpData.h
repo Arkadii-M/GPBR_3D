@@ -9,17 +9,17 @@
 class GpData
 {
 public:
-	using dmatBinaryDerivative = 
-		std::function<arma::dmat(
-		const arma::dmat& x,
-		const arma::dmat& y,
-		const arma::dmat& dx,
-		const arma::dmat& dy)>;
+	//using dmatBinaryDerivative = 
+	//	std::function<arma::dmat(
+	//	const arma::dmat& x,
+	//	const arma::dmat& y,
+	//	const arma::dmat& dx,
+	//	const arma::dmat& dy)>;
 
-	using dmatUnaryDerivative = 
-		std::function<arma::dmat(
-		const arma::dmat& x,
-		const arma::dmat& dx)>;
+	//using dmatUnaryDerivative = 
+	//	std::function<arma::dmat(
+	//	const arma::dmat& x,
+	//	const arma::dmat& dx)>;
 
 	using BinaryItem = GpItem<dmatBinaryFunc, dmatBinaryDerivative>;
 	using UnaryItem = GpItem<dmatUnaryFunc, dmatUnaryDerivative>;
