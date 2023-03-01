@@ -143,14 +143,14 @@
 #define SAME_PROB 1.0
 
 
-template<typename T>
-void CalculateCumulativeProbabilities(std::vector<GpItem<T>>& items)
+template<typename T,typename D>
+void CalculateCumulativeProbabilities(std::vector<GpItem<T, D>>& items)
 {
-	double sum = std::accumulate(items.begin(), items.end(), 0.0, [](double lhs,const GpItem<T>& item) {
+	double sum = std::accumulate(items.begin(), items.end(), 0.0, [](double lhs,const GpItem<T,D>& item) {
 			return lhs + item.getProbability();
 		});
 	std::accumulate(items.begin(), items.end(), 0.0,
-		[&](double lhs, GpItem<T>& item) {
+		[&](double lhs, GpItem<T,D>& item) {
 			double res = lhs + item.getProbability();
 			item.setCumulativeProbability(res / sum);
 		return res;
@@ -195,20 +195,52 @@ int main()
 
 	/* Configure Gp data*/
 
+	//[](const arma::dmat& x, const arma::dmat& y) {return x + y; }
+	auto plus_derivative = [](
+		const arma::dmat& x,
+		const arma::dmat& y,
+		const arma::dmat& dx,
+		const arma::dmat& dy) 
+	{return dx + dy; };
+
+
 	auto binary_functions = std::vector< GpData::BinaryItem>();
-	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x + y; }, "+", SAME_PROB));
-	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x - y; }, "-", SAME_PROB));
-	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x % y; }, "*", SAME_PROB));
-	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x / y; }, "/", 0.2));
-	binary_functions.push_back(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return pow(x,y); }, "^", 0.6));
+	binary_functions.push_back(GpData::BinaryItem(
+		[](const arma::dmat& x, const arma::dmat& y) {return x + y; },"+",SAME_PROB,
+		[](	const arma::dmat& x,const arma::dmat& y, 
+			const arma::dmat& dx, const arma::dmat& dy) {return dx + dy; }));
+
+	binary_functions.push_back(GpData::BinaryItem(
+		[](const arma::dmat& x, const arma::dmat& y) {return x - y; }, "-", SAME_PROB,
+		[](const arma::dmat& x, const arma::dmat& y,
+			const arma::dmat& dx, const arma::dmat& dy) {return dx - dy; }));
+	binary_functions.push_back(GpData::BinaryItem(
+		[](const arma::dmat& x, const arma::dmat& y) {return x % y; }, "*", SAME_PROB,
+		[](const arma::dmat& x, const arma::dmat& y,
+			const arma::dmat& dx, const arma::dmat& dy) {return dx%y - x%dy; }));
+	binary_functions.push_back(GpData::BinaryItem(
+		[](const arma::dmat& x, const arma::dmat& y) {return x / y; }, "/", 0.2,
+		[](const arma::dmat& x, const arma::dmat& y,
+			const arma::dmat& dx, const arma::dmat& dy) {return dx/y - (x/pow(y,2))%dy; }));
+	binary_functions.push_back(GpData::BinaryItem(
+		[](const arma::dmat& x, const arma::dmat& y) {return pow(x,y); }, "^", 0.6,
+		[](const arma::dmat& x, const arma::dmat& y,
+			//const arma::dmat& dx, const arma::dmat& dy) {return pow(x,y)%log(x)%dy + y%pow(x,y-1)%dx; }));
+			const arma::dmat& dx, const arma::dmat& dy) {return ( log(x)%dy + (y%dx)/x )% pow(x, y); }));
 	CalculateCumulativeProbabilities(binary_functions);
 
 
 	auto unary_functions = std::vector<GpData::UnaryItem>();
-	unary_functions.push_back(GpData::UnaryItem([](const arma::dmat& val) {return arma::sin(val); }, "sin", SAME_PROB));
-	unary_functions.push_back(GpData::UnaryItem([](const arma::dmat& val) {return arma::cos(val); }, "cos", SAME_PROB));
+	unary_functions.push_back(GpData::UnaryItem(
+		[](const arma::dmat& val) {return arma::sin(val); }, "sin", SAME_PROB,
+		[](const arma::dmat& x, const arma::dmat& dx) {return arma::cos(x)%dx; }));
+	unary_functions.push_back(GpData::UnaryItem(
+		[](const arma::dmat& val) {return arma::cos(val); }, "cos", SAME_PROB,
+		[](const arma::dmat& x, const arma::dmat& dx) {return -arma::sin(x) % dx; }));
 	//unary_functions.push_back(GpData::UnaryItem([](const arma::dmat& val) {return arma::log(val); }, "log", 0.1));
-	unary_functions.push_back(GpData::UnaryItem([](const arma::dmat& val) {return arma::sqrt(val); },"sqrt", SAME_PROB));
+	unary_functions.push_back(GpData::UnaryItem(
+		[](const arma::dmat& val) {return arma::sqrt(val); },"sqrt", SAME_PROB,
+		[](const arma::dmat& x, const arma::dmat& dx) {return dx/(2*sqrt(x)); }));
 	//unary_functions.push_back(GpData::UnaryItem([](const arma::dmat& val) {return arma::exp(val); }, "exp", 0.1));
 	//unary_functions.push_back(GpData::UnaryItem([](const arma::dmat& val) {return arma::abs(val); }, "abs", 0.1));
 	CalculateCumulativeProbabilities(unary_functions);

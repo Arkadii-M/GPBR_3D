@@ -9,16 +9,28 @@
 class GpData
 {
 public:
-	typedef GpItem<dmatBinaryFunc> BinaryItem;
-	typedef GpItem<dmatUnaryFunc> UnaryItem;
-	typedef GpItem<std::string>	VariableItem;
-	typedef GpItem<double> ConstItem;
+	using dmatBinaryDerivative = 
+		std::function<arma::dmat(
+		const arma::dmat& x,
+		const arma::dmat& y,
+		const arma::dmat& dx,
+		const arma::dmat& dy)>;
+
+	using dmatUnaryDerivative = 
+		std::function<arma::dmat(
+		const arma::dmat& x,
+		const arma::dmat& dx)>;
+
+	using BinaryItem = GpItem<dmatBinaryFunc, dmatBinaryDerivative>;
+	using UnaryItem = GpItem<dmatUnaryFunc, dmatUnaryDerivative>;
+	using VariableItem =  GpItem<std::string>;
+	using ConstItem =  GpItem<double>;
 
 
-	typedef std::set<GpItem<dmatBinaryFunc>> Bset;
-	typedef std::set<GpItem<dmatUnaryFunc>> Uset;
-	typedef std::set<GpItem<std::string>> Vset;
-	typedef std::set<GpItem<double>> Cset;
+	using Bset = std::set<BinaryItem>;
+	using Uset = std::set<UnaryItem>;
+	using Vset = std::set<VariableItem>;
+	using Cset = std::set<ConstItem>;
 
 private:
 	Bset binary_functions;

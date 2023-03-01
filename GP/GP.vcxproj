@@ -142,6 +142,7 @@
     <ClInclude Include="Gp.h" />
     <ClInclude Include="GpData.h" />
     <ClInclude Include="GpItem.h" />
+    <ClInclude Include="GpItemDerivative.h" />
     <ClInclude Include="IExpressionNode.h" />
     <ClInclude Include="Individuum.h" />
     <ClInclude Include="GpParser.h" />

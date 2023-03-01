@@ -99,6 +99,9 @@
     <ClInclude Include="UnaryNode.h">
       <Filter>Header Files\ExpressionTree</Filter>
     </ClInclude>
+    <ClInclude Include="GpItemDerivative.h">
+      <Filter>Header Files\GP\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ExpressionTree.cpp">

@@ -9,8 +9,9 @@ ScaleMutation::ScaleMutation(std::shared_ptr<GpData> gp_data,double scale, doubl
 	// Generate multiply node
 	auto binary_funcs = gp_data->getBinaryFunction();
 
+	
 	auto found = std::find_if(binary_funcs.begin(), binary_funcs.end(),
-		[](const GpItem<dmatBinaryFunc>& item) {
+		[](const GpData::BinaryItem& item) {
 			return item.getName() == "*";
 		});
 	if (found == binary_funcs.end())

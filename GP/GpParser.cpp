@@ -47,7 +47,10 @@ std::unique_ptr<IExpressionNode> GpParser::parseJsonToSubTree(json subtree)
 	if (right.is_null())// Unary function
 	{
 		auto Ufuncs = data->getUnaryFunction();
-		auto ufunc = std::find_if(Ufuncs.begin(), Ufuncs.end(), [&name](const GpItem<dmatUnaryFunc> item) {
+		//auto ufunc = std::find_if(Ufuncs.begin(), Ufuncs.end(), [&name](const GpItem<dmatUnaryFunc> item) {
+		//	return item.getName() == (std::string)name;
+		//	});
+		auto ufunc = std::find_if(Ufuncs.begin(), Ufuncs.end(), [&name](const GpData::UnaryItem item) {
 			return item.getName() == (std::string)name;
 			});
 		if (ufunc == Ufuncs.end())
@@ -57,7 +60,10 @@ std::unique_ptr<IExpressionNode> GpParser::parseJsonToSubTree(json subtree)
 	}
 	//Binary function
 	auto Bfuncs = data->getBinaryFunction();
-	auto bfunc = std::find_if(Bfuncs.begin(), Bfuncs.end(), [&name](const GpItem<dmatBinaryFunc> item) {
+	//auto bfunc = std::find_if(Bfuncs.begin(), Bfuncs.end(), [&name](const GpItem<dmatBinaryFunc> item) {
+	//	return item.getName() == (std::string)name;
+	//	});
+	auto bfunc = std::find_if(Bfuncs.begin(), Bfuncs.end(), [&name](const GpData::BinaryItem item) {
 		return item.getName() == (std::string)name;
 		});
 	if (bfunc == Bfuncs.end())
