@@ -105,6 +105,9 @@
     <ClInclude Include="PartialTreeDerivative.h">
       <Filter>Header Files\ExpressionTree</Filter>
     </ClInclude>
+    <ClInclude Include="IndividuumData.h">
+      <Filter>Header Files\GP\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ExpressionTree.cpp">
@@ -153,7 +156,7 @@
       <Filter>Source Files\ExpressionTree</Filter>
     </ClCompile>
     <ClCompile Include="PartialTreeDerivative.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ExpressionTree</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

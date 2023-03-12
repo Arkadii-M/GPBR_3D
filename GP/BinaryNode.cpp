@@ -50,3 +50,8 @@ TreeDerivative BinaryNode::autoDiffReverse(const arma::dmat& thetha, const arma:
     auto der = dfunc(left_res.getElement(), right_res.getElement(), left_res.getDerivative(), right_res.getDerivative());
     return TreeDerivative(eval, der);
 }
+
+std::any BinaryNode::getValue()
+{
+    return func;
+}

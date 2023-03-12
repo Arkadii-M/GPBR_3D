@@ -40,3 +40,9 @@ TreeDerivative VariableNode::autoDiffReverse(const arma::dmat& thetha, const arm
     auto zeros = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::zeros);
     return TreeDerivative(eval, zeros);
 }
+
+
+std::any VariableNode::getValue()
+{
+    return this->node_name;
+}

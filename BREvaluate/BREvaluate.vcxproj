@@ -139,11 +139,15 @@
     <ClInclude Include="Bezier.h" />
     <ClInclude Include="BezierCurvature.h" />
     <ClInclude Include="BoundaryCondtition.h" />
+    <ClInclude Include="ErrorFunction.h" />
     <ClInclude Include="EvaluateCpu.h" />
     <ClInclude Include="MeshIntersection.h" />
     <ClInclude Include="MFSCollocation.h" />
+    <ClInclude Include="MseError.h" />
     <ClInclude Include="PeriodicMesh.h" />
+    <ClInclude Include="ProblemData.h" />
     <ClInclude Include="ProblemHelper.h" />
+    <ClInclude Include="ProblemSolutionData.h" />
     <ClInclude Include="SphereBoundary.h" />
     <ClInclude Include="StarlikeBoundary.h" />
   </ItemGroup>
@@ -151,10 +155,13 @@
     <ClCompile Include="Bezier.cpp" />
     <ClCompile Include="BezierCurvature.cpp" />
     <ClCompile Include="BoundaryCondtition.cpp" />
+    <ClCompile Include="ErrorFunction.cpp" />
     <ClCompile Include="EvaluateCpu.cpp" />
     <ClCompile Include="MeshIntersection.cpp" />
     <ClCompile Include="MFSCollocation.cpp" />
+    <ClCompile Include="MseError.cpp" />
     <ClCompile Include="PeriodicMesh.cpp" />
+    <ClCompile Include="ProblemData.cpp" />
     <ClCompile Include="ProblemHelper.cpp" />
     <ClCompile Include="SphereBoundary.cpp" />
     <ClCompile Include="StarlikeBoundary.cpp" />

@@ -43,3 +43,9 @@ TreeDerivative UnaryNode::autoDiffReverse(const arma::dmat& thetha, const arma::
 	auto der = dfunc(left_res.getElement(),left_res.getDerivative());
 	return TreeDerivative(eval, der);
 }
+
+
+std::any UnaryNode::getValue()
+{
+	return func;
+}

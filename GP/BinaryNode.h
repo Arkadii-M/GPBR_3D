@@ -24,13 +24,11 @@ public:
 
 	virtual std::string toString() const override;
 
-
-	// Inherited via IExpressionNode
 	virtual std::unique_ptr<IExpressionNode> clone() override;
 
-
-	// Inherited via IExpressionNode
 	virtual TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo) override;
+
+	virtual std::any getValue() override;
 
 };
 

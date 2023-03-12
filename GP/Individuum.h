@@ -3,6 +3,7 @@
 #define INDIVIDUUM_H
 
 #include "ExpressionTree.h"
+#include "IndividuumData.h"
 
 class Individuum
 {
@@ -11,6 +12,8 @@ private:
 	double fitness;
 	bool is_calculated;
 
+	//TODO: create a class to store the problem data
+	std::unique_ptr<IndividuumData> data;
 public:
 	Individuum(std::unique_ptr<ExpressionTree> tree);
 	Individuum(const Individuum& rhs);
@@ -24,6 +27,8 @@ public:
 	std::unique_ptr<ExpressionTree>& getTree();
 	void setTree(std::unique_ptr<ExpressionTree> tree);
 
+	std::unique_ptr<IndividuumData>& getData();
+	void setData(std::unique_ptr<IndividuumData> data);
 
 	// TODO: add comapare and accumulate for STL.
 	static bool cmp_weak(const std::weak_ptr<Individuum>& a, const std::weak_ptr<Individuum>& b);

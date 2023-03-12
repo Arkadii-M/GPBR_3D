@@ -26,3 +26,9 @@ TreeDerivative TempNode::autoDiffReverse(const arma::dmat& thetha, const arma::d
 {
     throw std::logic_error("Temp node can't be evaluated");
 }
+
+
+std::any TempNode::getValue()
+{
+    return this->node_name;
+}

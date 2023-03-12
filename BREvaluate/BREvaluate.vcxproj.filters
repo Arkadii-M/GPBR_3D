@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Curvature">
       <UniqueIdentifier>{63548e06-a6b3-4790-b5c0-d908171f89e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Helpers\Error">
+      <UniqueIdentifier>{8573b72b-1be5-423e-9a62-ec72b9aa0d26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helper\Error">
+      <UniqueIdentifier>{4bef273a-55f8-4c1a-9075-3bd6a66467c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bezier.h">
@@ -61,6 +67,18 @@
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="EvaluateCpu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProblemData.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="MseError.h">
+      <Filter>Header Files\Helpers\Error</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorFunction.h">
+      <Filter>Header Files\Helpers\Error</Filter>
+    </ClInclude>
+    <ClInclude Include="ProblemSolutionData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -94,6 +112,15 @@
     </ClCompile>
     <ClCompile Include="BezierCurvature.cpp">
       <Filter>Source Files\Curvature</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorFunction.cpp">
+      <Filter>Source Files\Helper\Error</Filter>
+    </ClCompile>
+    <ClCompile Include="MseError.cpp">
+      <Filter>Source Files\Helper\Error</Filter>
+    </ClCompile>
+    <ClCompile Include="ProblemData.cpp">
+      <Filter>Source Files\Helper</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

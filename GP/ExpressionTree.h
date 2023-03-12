@@ -33,6 +33,7 @@ public:
 		bool isUnary() const;
 		bool isBinary() const;
 		bool isNull() const;
+		std::any getValue();
 
 		std::string getName() const;
 		uint getNum() const;
@@ -139,6 +140,7 @@ public:
 	std::unique_ptr<IExpressionNode> SubTree(std::unique_ptr<ExpressionTree>& tree, const uint sub_index);
 
 	arma::dmat evaluate(const arma::dmat& thetha, const arma::dmat& phi);
+	TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo);
 };
 
 #endif // ! EXPRESSION_TREE_H

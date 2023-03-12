@@ -1,116 +1,4 @@
-﻿//#include <iostream>
-//
-//#include "../GP/ExpressionTree.h"
-//#include "../GP/GpData.h"
-//#include "../GP/GpParser.h"
-//#include "../GP/TempNode.h"
-////#include "../GP/GpParser.h"
-//
-//struct RootFilter : public ExpressionTree::NodeFilter
-//{
-//	virtual bool selectCondition(const std::unique_ptr<IExpressionNode>& node) override {
-//		return node->getNum() != 1;
-//	}
-//};
-//
-//int main()
-//{
-//	std::unique_ptr<IExpressionNode> thetha = std::make_unique<VariableNode>("thetha");
-//	std::unique_ptr<IExpressionNode> phi = std::make_unique<VariableNode>("phi");
-//
-//	std::unique_ptr<IExpressionNode> cos = std::make_unique<UnaryNode>([](const arma::dmat& val) {return arma::cos(val); }, "cos", std::move(thetha));
-//	std::unique_ptr<IExpressionNode> sin = std::make_unique<UnaryNode>([](const arma::dmat& val) {return arma::sin(val); }, "sin", std::move(phi));
-//
-//
-//	std::unique_ptr<IExpressionNode> plus = std::make_unique<BinaryNode>([](const arma::dmat& x, const arma::dmat& y) {return x + y; }, "+", std::move(cos), std::move(sin));
-//
-//
-//	std::unique_ptr<IExpressionNode> thetha1 = std::make_unique<VariableNode>("thetha");
-//	std::unique_ptr<IExpressionNode> phi1 = std::make_unique<VariableNode>("phi");
-//
-//	std::unique_ptr<IExpressionNode> exp = std::make_unique<UnaryNode>([](const arma::dmat& val) {return arma::cos(val); }, "exp", std::move(thetha1));
-//	std::unique_ptr<IExpressionNode> tan = std::make_unique<UnaryNode>([](const arma::dmat& val) {return arma::sin(val); }, "tan", std::move(phi1));
-//
-//
-//	std::unique_ptr<IExpressionNode> minus = std::make_unique<BinaryNode>([](const arma::dmat& x, const arma::dmat& y) {return x + y; }, "-", std::move(exp), std::move(tan));
-//
-//	std::unique_ptr<ExpressionTree> tree1 = std::make_unique<ExpressionTree>(std::move(plus));
-//	std::unique_ptr<ExpressionTree> tree2 = std::make_unique<ExpressionTree>(std::move(minus));
-//
-//	std::cout << tree1->print() << "\n";
-//	std::cout << tree2->print() << "\n\n\n";
-//
-//	auto t1_o = tree1->getRootObserver()->getLeft();
-//	auto t2_o = tree2->getRootObserver()->getRight();
-//
-//	ExpressionTree::ReplaceNodes(tree1,tree2,t1_o, t2_o);
-//
-//	std::cout << tree1->print() << "\n";
-//	std::cout << tree2->print() << "\n";
-//	//std::cout << t1_o.print() << "\n";
-//	//std::cout << t2_o.print() << "\n";
-//
-//	//ExpressionTree::SwapNodesAtPositions(tree1, tree2, 2, 4);
-//
-//
-//	//std::cout << tree1->getRoot()->toString() << "\n";
-//	//std::cout << tree2->getRoot()->toString() << "\n";
-//
-//	//std::unique_ptr<ExpressionTree::NodeFilter> root_filter = std::make_unique<RootFilter>();
-//	//auto ret_vec = tree1->filterNodesIdexes(root_filter);
-//
-//
-//	//const arma::uword n_repeat = 1;
-//	//GpData::Bset bset = GpData::Bset();
-//	//bset.insert(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x - y; }, "-", 1.0));
-//	//bset.insert(GpData::BinaryItem([](const arma::dmat& x, const arma::dmat& y) {return x + y; }, "+", 1.0));
-//
-//	//GpData::Uset uset = GpData::Uset();
-//	//uset.insert(GpData::UnaryItem([](const arma::dmat& val) {return arma::cos(val); }, "cos", 1.0));
-//	//uset.insert(GpData::UnaryItem([](const arma::dmat& val) {return arma::sin(val); }, "sin", 1.0));
-//
-//	//GpData::Vset vset = GpData::Vset();
-//	//vset.insert(GpData::VariableItem("thetha","thetha", 1.0));
-//	//vset.insert(GpData::VariableItem("phi", "phi", 1.0));
-//
-//	//GpData::Cset cset = GpData::Cset();
-//	//cset.insert(GpData::ConstItem(0.0, "0.0", 1.0));
-//
-//
-//	//auto gp_data = std::make_shared<GpData>(bset,uset,vset,cset, n_repeat, n_repeat);
-//	//auto gp_parser = GpParser(gp_data);
-//
-//	//std::unique_ptr<IExpressionNode> thetha = std::make_unique<VariableNode>("thetha");
-//	//std::unique_ptr<IExpressionNode> phi = std::make_unique<VariableNode>("phi");
-//	//std::unique_ptr<IExpressionNode> thetha1 = std::make_unique<VariableNode>("thetha");
-//	//std::unique_ptr<IExpressionNode> phi1 = std::make_unique<VariableNode>("phi");
-//
-//	//std::unique_ptr<IExpressionNode> minus = std::make_unique<BinaryNode>([](const arma::dmat& x, const arma::dmat& y) {return x - y; }, "-", std::move(thetha1), std::move(phi1));
-//
-//	//std::unique_ptr<IExpressionNode> cos = std::make_unique<UnaryNode>([](const arma::dmat& val) {return arma::cos(val); }, "cos", std::move(minus));
-//	//std::unique_ptr<IExpressionNode> sin = std::make_unique<UnaryNode>([](const arma::dmat& val) {return arma::sin(val); }, "sin", std::move(phi));
-//
-//
-//	//std::unique_ptr<IExpressionNode> plus = std::make_unique<BinaryNode>([](const arma::dmat& x, const arma::dmat& y) {return x + y; }, "+", std::move(cos), std::move(sin));
-//
-//
-//	//std::cout << "Constructed tree:\n" << plus->toString() << "\n";
-//
-//	//std::unique_ptr<ExpressionTree> tree1 = std::make_unique<ExpressionTree>(std::move(plus));
-//
-//
-//	//json tree_json = gp_parser.parseTreeToJson(tree1);
-//	////std::cout << tree_json.dump(4) << "\n";
-//	//auto tree_from_json = gp_parser.parseJsonToTree(tree_json);
-//
-//	//std::cout << "From json:\n" << tree_from_json->getRoot()->toString() << "\n";
-//
-//
-//	return 0;
-//}
-
-
-#include "../RmodelGP/RModelGp.h"
+﻿#include "../RmodelGP/RModelGp.h"
 #include "../BREvaluate/EvaluateCpu.h"
 #include "../RmodelGP/RModelSelector.h"
 #include "../SolutionProcessor/SolutionProcessor.h"
@@ -130,6 +18,7 @@
 #include "../BREvaluate/BoundaryCondtition.h"
 #include "../BREvaluate/StarlikeBoundary.h"
 #include "../GP/GpParser.h"
+#include "../BREvaluate/MseError.h"
 #include <iostream>
 #include <cassert>
 #include <string.h>
@@ -278,12 +167,17 @@ int main()
 	// define collocation
 	MFSCollocation collocation = MFSCollocation(n_boundary,n_sources);
 
+
+	// define data
+	auto problem_data = std::make_shared<ProblemData>(Gamma1, Gamma2, Gamma1Cond, Gamma2Cond, collocation);
+	
+
 	// define helper
-	auto helper = std::make_unique<ProblemHelper>(collocation, Gamma1, Gamma1Cond, Gamma2, Gamma2Cond);
+	auto helper = std::make_shared<ProblemHelper>(problem_data);
 
 	// define points collocation on boudary and sources
-	auto coll_boundary = collocation.getBoundary();
-	auto coll_sources = collocation.getSources();
+	auto coll_boundary = problem_data->getBoundaryCollocation();
+	auto coll_sources = problem_data->getSourcesCollocation();
 
 	rfunc_vec r_exact = [](arma::dcolvec thetha, arma::dcolvec phi) {
 		arma::dcolvec res = 2 + sqrt(4.25 + 3 * cos(3 * thetha));
@@ -306,28 +200,31 @@ int main()
 	arma::dcube G1_boundary = Gamma1(coll_vals, coll_boundary.getThetha(), coll_boundary.getPhi());
 	arma::dcube G1_sources  = Gamma1(source_vals, coll_sources.getThetha(), coll_sources.getPhi());
 
-	// form and solve equation
-	arma::dmat A = helper->formMatrix(G1_boundary, G1_sources);
-	arma::dcolvec b = helper->formColumn(G1_boundary);
+	// find data on external boundary
+	arma::dcolvec u_on_g2;
+	helper->uOnG2(G1_boundary, G1_sources, u_on_g2);
 
-	arma::dcolvec lambda = arma::solve(A, b);
-	//lambda.raw_print("lambda = ");
-
-
-	// calculate data on G2
-	arma::dcube G2_boundary = Gamma2(coll_boundary.getThetha(), coll_boundary.getPhi());
-	arma::dcolvec u_on_g2 = helper->uApprox(lambda, G2_boundary, G1_sources);
-	//u_on_g2.print("Uapprox on G2:");
 
 	/// Form test condition
 	// use them as test condition
 	MFS_BC Gamma2TestCond = MFS_BC([&u_on_g2](arma::dcube X){ return u_on_g2; });// TODO: implement noise
-	helper->setTestCondition(Gamma2TestCond);
+	problem_data->setG2TestCondition(Gamma2TestCond);
+
+
+	// define an error function
+	std::shared_ptr<ErrorFunction> mse_error = std::make_unique<MseError>();
+
 
 	// calculate norm for the fixed G1 values. Check if error is zero
-	double test_error = helper->l2Norm(G1_boundary, G1_sources);
+	auto exact_f_data = problem_data->getG2TestConditionValues();
+
+	double test_error = mse_error->evaluate(exact_f_data, u_on_g2);
 	std::cout << "test error: " << test_error << "\n";
-	assert(helper->l2Norm(G1_boundary, G1_sources)< 1e-5);// Note. There is no noise. TODO: change when noise will be implemented
+	assert(test_error < 1e-5);// Note. There is no noise. TODO: change when noise will be implemented
+
+
+
+	
 	/*	define tree generators	*/
 	auto full_grow_generator = std::make_shared<FullGrowGenerator>(gp_data, min_tree_h, max_tree_h);
 	//auto ptc1_generator = std::make_shared<PTC_1_Generator>(gp_data, 20, max_tree_h);
@@ -357,7 +254,8 @@ int main()
 	auto selector = std::make_unique<RModelSelector>(mutate_prob, cross_prob, r_param, tournament);
 
 	std::unique_ptr<Evaluator> cpu_eval = std::make_unique<EvaluateCpu>(
-		std::move(helper),
+		helper,
+		mse_error,
 		std::make_unique<MeshIntersection>(n_boundary, n_boundary, 1, 1),// TODO: test
 		std::make_unique<BezierCurvature>(n_boundary-1, arma::linspace<arma::drowvec>(0, 1, 50), curvature_threshold)
 		);

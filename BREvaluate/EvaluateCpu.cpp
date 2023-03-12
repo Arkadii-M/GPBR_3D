@@ -1,28 +1,40 @@
 #include "EvaluateCpu.h"
 
 EvaluateCpu::EvaluateCpu(
-    std::unique_ptr<ProblemHelper> helper,
+    std::shared_ptr<ProblemHelper> helper,
+    std::shared_ptr<ErrorFunction> err,
     std::unique_ptr<MeshIntersection> inter,
     std::unique_ptr<BezierCurvature> curv):
-    helper(std::move(helper)),
+    helper(helper),
+    error(err),
+    data(helper->getProblemData()),
     intersection(std::move(inter)),
     curvature(std::move(curv))
 {
-    auto collocation = this->helper->getCollocation();
+    //auto collocation = this->helper->getCollocation();
 
-    auto boundary = collocation.getBoundary();
-    auto boundary_meshgrid = ProblemHelper::meshGrid(boundary.getThetha(), boundary.getPhi());
+    //auto boundary = collocation.getBoundary();
+    //auto boundary_meshgrid = ProblemHelper::meshGrid(boundary.getThetha(), boundary.getPhi());
 
 
-    boundary_cyclic = collocation.getBoundaryCyclic();
+    //boundary_cyclic = collocation.getBoundaryCyclic();
+    //boundary_cyclic_meshgrid = ProblemHelper::meshGrid(boundary_cyclic.getThetha(), boundary_cyclic.getPhi());
+
+    //sources = collocation.getSources();
+
+
+    //Gamma1 = this->helper->getGamma1();
+    //Gamma2Mesh = this->helper->getGamma2()(boundary_meshgrid.slice(0), boundary_meshgrid.slice(1));
+    //G2Distance = sqrt(sum(arma::pow(Gamma2Mesh, 2), 2));
+    auto boundary_cyclic = data->getCollocation().getBoundaryCyclic();
     boundary_cyclic_meshgrid = ProblemHelper::meshGrid(boundary_cyclic.getThetha(), boundary_cyclic.getPhi());
 
-    sources = collocation.getSources();
+    auto boundary_meshgrid = ProblemHelper::meshGrid(data->getBoundaryTheta(), data->getBoundaryPhi());
+    auto G2Mesh = data->getG2Boundary()(boundary_meshgrid.slice(0), boundary_meshgrid.slice(1));
+    G2Distance = sqrt(sum(arma::pow(G2Mesh, 2), 2));
 
+    f_exact = data->getG2TestConditionValues();
 
-    Gamma1 = this->helper->getGamma1();
-    Gamma2Mesh = this->helper->getGamma2()(boundary_meshgrid.slice(0), boundary_meshgrid.slice(1));
-    G2Distance = sqrt(sum(arma::pow(Gamma2Mesh, 2), 2));
 
 }
 
@@ -30,14 +42,8 @@ double EvaluateCpu::evaluateOne(const std::weak_ptr<Individuum> individuum)
 {
     auto& tree = individuum.lock()->getTree();
     auto r_boundary_cyclic = tree->evaluate(boundary_cyclic_meshgrid.slice(0), boundary_cyclic_meshgrid.slice(1));// mesh is cyclyc there!
-    auto G1_mesh_cyclic = Gamma1(r_boundary_cyclic, boundary_cyclic_meshgrid.slice(0), boundary_cyclic_meshgrid.slice(1));
-    //G1_mesh_cyclic.print("G1_mesh_cyclic");
-    //std::string tree_str= tree->print();
-    //std::cout << std::format("Tree: {}\n\n", tree->print());
-    //if (tree_str == "sqrt(thetha)")
-    //{
-    //    tree_str.c_str();
-    //}
+    auto G1_mesh_cyclic = data->getG1Boundary()(r_boundary_cyclic, boundary_cyclic_meshgrid.slice(0), boundary_cyclic_meshgrid.slice(1));
+
     if(!G1_mesh_cyclic.is_finite())// check if all elements are finite
         return INVALID_FITNESS;
 
@@ -47,13 +53,9 @@ double EvaluateCpu::evaluateOne(const std::weak_ptr<Individuum> individuum)
     if (!periodic_mesh::isPeriodic(G1_mesh_cyclic))  // check if mesh is closed surface
         return INVALID_FITNESS;
 
-    //std::cout << std::format("Check tree: {}\n\n", tree->print());
-
-    //arma::dcube G1_mesh = G1_mesh_cyclic(arma::span(0, G1_mesh_cyclic.n_rows-2), arma::span(0, G1_mesh_cyclic.n_cols-2), arma::span::all);// skip cyclic values
     arma::dcube G1_mesh = G1_mesh_cyclic(arma::span(0, G1_mesh_cyclic.n_rows - 2), arma::span::all, arma::span::all);// skip cyclic values
 
 
-    //std::cout << std::format("Tree: {}\n\n", tree->print());
     arma::umat points_inside = (arma::dmat)sqrt(sum(arma::pow(G1_mesh, 2), 2)) < G2Distance;
     if (!arma::all(vectorise(points_inside)))// check if all points inside outter mesh
     {
@@ -82,40 +84,23 @@ double EvaluateCpu::evaluateOne(const std::weak_ptr<Individuum> individuum)
 
 
     // after boundary satisfiy previous conditions we can calculate the error
-
-    arma::dcolvec r_sources = tree->evaluate(sources.getThetha(), sources.getPhi()).as_col();// TODO: change
-    auto G1_sources = Gamma1(r_sources, sources.getThetha(), sources.getPhi());
+    arma::dcolvec r_sources = tree->evaluate(data->getSourcesTheta(), data->getSourcesPhi()).as_col();// TODO: change
+    auto G1_sources = data->getG1Boundary()(r_sources, data->getSourcesTheta(), data->getSourcesPhi());
 
     arma::dcube G1_boundary = arma::dcube(G1_mesh.n_rows, 1, 3);
     G1_boundary.slice(0) = G1_mesh.slice(0).diag();
     G1_boundary.slice(1) = G1_mesh.slice(1).diag();
     G1_boundary.slice(2) = G1_mesh.slice(2).diag();
-    //try
-    //{
-    //    return helper->l2Norm(G1_boundary, G1_sources);
-    //}
-    //catch (std::exception e)
-    //{
-    //    std::cout <<std::format("Tree: {}, error: {}\n\n",tree->print(), e.what());
-    //    return INVALID_FITNESS;
-    //}
-    double res = -1.0;
-    if (!helper->l2Norm(G1_boundary, G1_sources, res))
+
+
+    arma::dcolvec f_approx;
+
+    if (!helper->uOnG2(G1_boundary, G1_sources, f_approx))
     {
         std::cout << std::format("No valid solution for tree: {}\n\n", tree->print());
         return INVALID_FITNESS;
     }
-    return res;
-    //try
-    //{
-
-    //    return helper->l2Norm(G1_boundary, G1_sources);
-    //}
-    //catch (std::exception e)
-    //{
-    //    std::cout << std::format("Tree: {}, error: {}\n\n", tree->print(), e.what());
-    //    return INVALID_FITNESS;
-    //}
+    return this->error->evaluate(f_exact, f_approx);
 }
 
 void EvaluateCpu::evaluatePopulation(Population& population)

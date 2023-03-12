@@ -24,7 +24,7 @@ public:
 
 	// Inherited via IExpressionNode
 	virtual TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo) override;
-
+	virtual std::any getValue() override;
 };
 
 #endif //VARIABLE_NODE_H

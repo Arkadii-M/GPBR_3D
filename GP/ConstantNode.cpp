@@ -52,3 +52,10 @@ TreeDerivative ConstantNode::autoDiffReverse(const arma::dmat& thetha, const arm
     auto zeros = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::zeros);
     return TreeDerivative(eval, zeros);
 }
+
+
+
+std::any ConstantNode::getValue()
+{
+    return this->value;
+}

@@ -39,7 +39,7 @@ void ScaleMutation::apply(std::weak_ptr<Individuum> individuum)
 		return;
 	}
 
-	// Generate root woth multiply function
+	// Generate root with multiply function
 	auto new_tree = std::make_unique<ExpressionTree>(
 		std::make_unique<BinaryNode>(
 			multiply_item.getItem(),
@@ -82,13 +82,17 @@ void ScaleMutation::adjustConstant(std::unique_ptr<ExpressionTree::NodeObserve>&
 {
 	if (Random::get<bool>())
 	{
+		//ExpressionTree::NodeObserve::SwapSubTrees(const_observer,
+		//	std::make_unique<ConstantNode>(std::stod(const_observer->getName()) + fit_scale));
 		ExpressionTree::NodeObserve::SwapSubTrees(const_observer,
-			std::make_unique<ConstantNode>(std::stod(const_observer->getName()) + fit_scale));
+			std::make_unique<ConstantNode>(std::any_cast<double>(const_observer->getValue()) + fit_scale));
 	}
 	else
 	{
 		ExpressionTree::NodeObserve::SwapSubTrees(const_observer,
-			std::make_unique<ConstantNode>(std::stod(const_observer->getName()) - fit_scale));
+			std::make_unique<ConstantNode>(std::any_cast<double>(const_observer->getValue()) + fit_scale));
+		//ExpressionTree::NodeObserve::SwapSubTrees(const_observer,
+		//	std::make_unique<ConstantNode>(std::stod(const_observer->getName()) - fit_scale));
 	}
 
 }

@@ -145,6 +145,7 @@
     <ClInclude Include="UniformCrossover.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BackPropagationMutation.cpp" />
     <ClCompile Include="ConstMutation.cpp" />
     <ClCompile Include="HoistMutation.cpp" />
     <ClCompile Include="NodeReplaceMutation.cpp" />

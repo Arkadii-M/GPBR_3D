@@ -6,6 +6,7 @@
 #include <memory>
 #include <armadillo>
 #include <ostream>
+#include <any>
 #include "PartialTreeDerivative.h"
 typedef unsigned int uint;
 class IExpressionNode
@@ -42,6 +43,8 @@ public:
 
 	std::unique_ptr<IExpressionNode>& getLeftSon();
 	std::unique_ptr<IExpressionNode>& getRightSon();
+
+	virtual std::any getValue() = 0;
 
 	void setLeftSon(std::unique_ptr<IExpressionNode> rhs);
 	void setRightSon(std::unique_ptr<IExpressionNode> rhs);

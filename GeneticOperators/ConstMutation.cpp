@@ -33,8 +33,11 @@ void ConstantMutation::apply(std::weak_ptr<Individuum> individuum)
 	double fit_scale = scale*individuum.lock()->getFintness();
 	double rand_value = Random::get<double>(a- fit_scale, b+ fit_scale);
 
+	//ExpressionTree::NodeObserve::SwapSubTrees(observer,
+	//	std::make_unique<ConstantNode>(std::stod(observer->getName()) + rand_value));
 	ExpressionTree::NodeObserve::SwapSubTrees(observer,
-		std::make_unique<ConstantNode>(std::stod(observer->getName()) + rand_value));
+		std::make_unique<ConstantNode>(std::any_cast<double>(observer->getValue()) + rand_value));
+	
 	tree->recalculate();
 }
 bool ConstantMutation::Filter::selectCondition(const std::unique_ptr<IExpressionNode>& node)

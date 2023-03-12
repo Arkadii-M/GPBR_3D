@@ -7,47 +7,29 @@
 #include "MFSCollocation.h"
 #include "StarlikeBoundary.h"
 #include "SphereBoundary.h"
+#include "ProblemData.h"
 
 class ProblemHelper
 {
-	StarLike3DBoundary Gamma1;
-	MFS_BC Gamma1Cond;
-
-	SphereBoundary Gamma2;
-	MFS_BC Gamma2Cond;
-	MFS_BC Gamma2TestCond;
-
-	const MFSCollocation collocation;
-	const Collocation boundary_collocation;
-	const Collocation sources_collocation;
-
-	const arma::dcube G2boundary;
-	const arma::dcube G2sources;
+public:
+	using uint = unsigned int;
+private:
+	std::shared_ptr<ProblemData> data;
 
 
 public:
-	ProblemHelper(MFSCollocation collocation,
-		StarLike3DBoundary Gamma1,
-		MFS_BC Gamma1Cond,
-		SphereBoundary Gamma2,
-		MFS_BC Gamma2Cond);
-
-	void setTestCondition(MFS_BC Gamma2TestCond);
-	void setG1Condition(MFS_BC Gamma1Cond);
-	void setG2Condition(MFS_BC Gamma2Cond);
-
-	StarLike3DBoundary getGamma1() const;
-	SphereBoundary getGamma2() const;
-
-
+	ProblemHelper(std::shared_ptr<ProblemData> data);
+	std::shared_ptr<ProblemData> getProblemData();
 
 	arma::dmat formMatrix(const arma::dcube& G1_boundary, const arma::dcube& G1_sources);
 	arma::dcolvec formColumn(const arma::dcube& G1_boundary);
 	arma::dcolvec uApprox(const arma::dcolvec& lambda, const arma::dcube& X, const  arma::dcube& G1_sources);
-	double l2Norm(const arma::dcube& G1_boundary, const arma::dcube& G1_sources);
-	bool l2Norm(const arma::dcube& G1_boundary, const arma::dcube& G1_sources,double & res);
-	const MFSCollocation getCollocation() const;
+	arma::dcube partialU(const arma::dcolvec& lambda, const arma::dcube& X, const arma::dcube& dX, const  arma::dcube& G1_sources);
+	bool uOnG2(const arma::dcube& G1_boundary, const arma::dcube& G1_sources, arma::dcolvec& res);
 
+
+	//double l2Norm(const arma::dcube& G1_boundary, const arma::dcube& G1_sources);
+	//bool l2Norm(const arma::dcube& G1_boundary, const arma::dcube& G1_sources,double & res);
 
 	static arma::dcube meshGrid(arma::dcolvec x, arma::dcolvec y);
 private:

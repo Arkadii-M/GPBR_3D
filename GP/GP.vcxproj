@@ -146,6 +146,7 @@
     <ClInclude Include="IExpressionNode.h" />
     <ClInclude Include="Individuum.h" />
     <ClInclude Include="GpParser.h" />
+    <ClInclude Include="IndividuumData.h" />
     <ClInclude Include="PartialTreeDerivative.h" />
     <ClInclude Include="Population.h" />
     <ClInclude Include="random.hpp" />
