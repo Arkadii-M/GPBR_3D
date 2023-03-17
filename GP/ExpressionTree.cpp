@@ -108,12 +108,10 @@ bool ExpressionTree::postOrder(std::unique_ptr<IExpressionNode>& node, std::uniq
 	handler->onReturn();
 	return false;
 }
-
-std::vector<uint> ExpressionTree::filterNodesIdexes(std::unique_ptr<NodeFilter> filter)
+std::vector<uint> ExpressionTree::filterNodes(NodeFilter filter)
 {
-	std::unique_ptr<OrderHandler> node_filter = std::move(filter);
-	preOrder(root, node_filter);
-	return static_cast<NodeFilter*>(node_filter.get())->getResult();
+	TreeTraversal::preOrder(getRootObserver(), filter);
+	return filter.getFilteredIndexes();
 }
 
 arma::dmat ExpressionTree::evaluate(const arma::dmat& thetha, const arma::dmat& phi)
@@ -121,9 +119,14 @@ arma::dmat ExpressionTree::evaluate(const arma::dmat& thetha, const arma::dmat& 
 	return root->evaluate(thetha,phi);
 }
 
-TreeDerivative ExpressionTree::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo)
+//TreeDerivative ExpressionTree::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo)
+//{
+//	return root->autoDiffReverse(thetha, phi, dinfo);
+//}
+
+TreeDerivative ExpressionTree::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivative::PartialDerivativeStrategy strategy)
 {
-	return root->autoDiffReverse(thetha, phi, dinfo);
+	return root->autoDiffReverse(thetha, phi, strategy);
 }
 
 // Enumerate implementation
@@ -156,148 +159,30 @@ bool ExpressionTree::HeightHandler::operator()(std::unique_ptr<IExpressionNode>&
 
 }
 
-// Filter
-ExpressionTree::NodeFilter::NodeFilter()
+void ExpressionTree::SwapSubTress(std::unique_ptr<ExpressionTree>& first_tree, std::unique_ptr<ExpressionTree>& second_tree, std::unique_ptr<NodeObserver>& first_observe, std::unique_ptr<NodeObserver>& second_observe)
 {
-	filtered_indexes = std::vector<uint>();
-}
-
-std::vector<uint> ExpressionTree::NodeFilter::getResult()
-{
-	return filtered_indexes;
-}
-bool ExpressionTree::NodeFilter::operator()(std::unique_ptr<IExpressionNode>& node)
-{
-	if (selectCondition(node))
-		filtered_indexes.push_back(node->getNum());
-	return false;
-}
-ExpressionTree::NodeObserve::NodeObserve(std::unique_ptr<IExpressionNode>& curr) :
-	current(curr)
-{
-}
-
-std::unique_ptr <ExpressionTree::NodeObserve> ExpressionTree::NodeObserve::getLeft() const
-{
-	return std::make_unique<NodeObserve>(current->getLeftSon());
-}
-
-std::unique_ptr<ExpressionTree::NodeObserve> ExpressionTree::NodeObserve::getRight() const
-{
-	return std::make_unique<NodeObserve>(current->getRightSon());
-}
-
-bool ExpressionTree::NodeObserve::isLeaf() const
-{
-	return current->isLeaf();
-}
-
-bool ExpressionTree::NodeObserve::isVariable() const
-{
-	auto name = current->getName();
-	return name == "thetha" || name == "phi";//TODO: CHANGE
-}
-bool ExpressionTree::NodeObserve::isConstant() const
-{
-	// TODO: CNAGE
-	try
-	{
-		std::stod(current->getName());
-	}
-	catch (...)
-	{
-		return false;
-	}
-	return true;
-}
-
-bool ExpressionTree::NodeObserve::isUnary() const
-{
-	return current->getLeftSon() && !current->getRightSon();
-}
-
-bool ExpressionTree::NodeObserve::isBinary() const
-{
-	return current->getLeftSon() && current->getRightSon();
-}
-bool ExpressionTree::NodeObserve::isNull() const
-{
-	return !current;
-}
-std::string ExpressionTree::NodeObserve::getName() const
-{
-	return current->getName();
-}
-
-uint ExpressionTree::NodeObserve::getNum() const
-{
-	return current->getNum();
-}
-std::any ExpressionTree::NodeObserve::getValue()
-{
-	return current->getValue();
-}
-std::string ExpressionTree::NodeObserve::print() const
-{
-	return current->toString();
-}
-
-std::unique_ptr<IExpressionNode> ExpressionTree::NodeObserve::subTreeCopy()
-{
-	return current->clone();
-}
-
-void ExpressionTree::NodeObserve::SwapSubTrees(std::unique_ptr<NodeObserve>& first, std::unique_ptr<NodeObserve>& second)
-{
-	first->current.swap(second->current);
-}
-
-void ExpressionTree::NodeObserve::SwapSubTrees(std::unique_ptr<NodeObserve>& first, std::unique_ptr<IExpressionNode> second)
-{
-	first->current.swap(second);
-}
-
-void ExpressionTree::NodeObserve::ReplaceNodes(std::unique_ptr<NodeObserve>& first, std::unique_ptr<NodeObserve>& second)
-{
-	// Swap childs
-	first->current->getLeftSon().swap(second->current->getLeftSon());
-	first->current->getRightSon().swap(second->current->getRightSon());
-	// Swap nodes
-	first->current.swap(second->current);
-}
-void ExpressionTree::NodeObserve::ReplaceNodes(std::unique_ptr<NodeObserve>& first, std::unique_ptr<IExpressionNode> second)
-{
-	// Swap childs
-	first->current->getLeftSon().swap(second->getLeftSon());
-	first->current->getRightSon().swap(second->getRightSon());
-	// Swap nodes
-	first->current.swap(second);
-}
-void ExpressionTree::SwapSubTress(std::unique_ptr<ExpressionTree>& first_tree, std::unique_ptr<ExpressionTree>& second_tree, std::unique_ptr<NodeObserve>& first_observe, std::unique_ptr<NodeObserve>& second_observe)
-{
-	NodeObserve::SwapSubTrees(first_observe, second_observe);
+	NodeObserver::SwapSubTrees(first_observe, second_observe);
 	first_tree->recalculate();
 	second_tree->recalculate();
 }
 void ExpressionTree::ReplaceNodes(
 	std::unique_ptr<ExpressionTree>& first_tree,
 	std::unique_ptr<ExpressionTree>& second_tree,
-	std::unique_ptr<NodeObserve>& first_observe,
-	std::unique_ptr<NodeObserve>& second_observe)
+	std::unique_ptr<NodeObserver>& first_observe,
+	std::unique_ptr<NodeObserver>& second_observe)
 {
-	NodeObserve::ReplaceNodes(first_observe, second_observe);
+	NodeObserver::ReplaceNodes(first_observe, second_observe);
 	first_tree->recalculate();
 	second_tree->recalculate();
 }
 
-std::unique_ptr<ExpressionTree::NodeObserve> ExpressionTree::getRootObserver()
+std::unique_ptr<NodeObserver> ExpressionTree::getRootObserver()
 {
-	return std::make_unique<NodeObserve>(root);
+	return std::make_unique<NodeObserver>(root);
 }
-
-std::unique_ptr <ExpressionTree::NodeObserve> ExpressionTree::getNodeObserver(uint node_id)
+std::unique_ptr<NodeObserver> ExpressionTree::getNodeObserver(uint node_id)
 {
-	std::unique_ptr<OrderHandler> handler = std::make_unique<ObserverExtract>(node_id);
+	std::unique_ptr<ExpressionTree::OrderHandler> handler = std::make_unique<ExpressionTree::ObserverExtract>(node_id);
 	preOrder(root, handler);
 	return static_cast<ObserverExtract*>(handler.get())->getObserver();
 }
@@ -308,7 +193,7 @@ ExpressionTree::ObserverExtract::ObserverExtract(uint id):
 {
 }
 
-std::unique_ptr <ExpressionTree::NodeObserve> ExpressionTree::ObserverExtract::getObserver()
+std::unique_ptr <NodeObserver> ExpressionTree::ObserverExtract::getObserver()
 {
 	return std::move(observer);
 }
@@ -317,7 +202,7 @@ bool ExpressionTree::ObserverExtract::operator()(std::unique_ptr<IExpressionNode
 {
 	if (node->getNum() == node_id)
 	{
-		observer = std::make_unique<NodeObserve>(node);
+		observer = std::make_unique<NodeObserver>(node);
 		return true;
 	}
 	return false;

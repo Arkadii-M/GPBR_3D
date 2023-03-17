@@ -44,14 +44,14 @@ public:
 	std::unique_ptr<IExpressionNode>& getLeftSon();
 	std::unique_ptr<IExpressionNode>& getRightSon();
 
-	virtual std::any getValue() = 0;
+	virtual std::any getValue() const = 0;
 
 	void setLeftSon(std::unique_ptr<IExpressionNode> rhs);
 	void setRightSon(std::unique_ptr<IExpressionNode> rhs);
 
 	// evaluete the tree expression
 	virtual arma::dmat evaluate(const arma::dmat& thetha, const arma::dmat& phi) = 0;
-	virtual TreeDerivative autoDiffReverse(const arma::dmat& thetha,const arma::dmat& phi,const TreeDerivativeInfo & dinfo) = 0; // Evaluates function and partial derivatives in O(tree_size)
+	virtual TreeDerivative autoDiffReverse(const arma::dmat& thetha,const arma::dmat& phi,const TreeDerivative::PartialDerivativeStrategy strategy) = 0; // Evaluates function and partial derivatives in O(tree_size)
 
 	virtual std::unique_ptr<IExpressionNode> clone() = 0;
 	virtual std::string toString() const = 0;

@@ -14,17 +14,18 @@ void ShrinkMutation::apply(std::weak_ptr<Individuum> individuum)
 	if (tree->getHeight() == 0)
 		return;
 
-	auto nodes_list = tree->filterNodesIdexes(std::make_unique<ShrinkMutation::Filter>());
+	auto nodes = tree->filterNodes(NodeFilter(
+		[](NodeFilter::node_arg arg)
+		{
+			return 	NotRoot()(arg);
+		}
+	));
 
-	uint rand_node = *Random::get(nodes_list.begin(), nodes_list.end());
+	auto observer = tree->getNodeObserver(*Random::get(nodes.begin(), nodes.end()));
 
-	auto observer = tree->getNodeObserver(rand_node);
 	auto rand_terminal = tree_gen->generateTerminal();
-	auto terminal = std::make_unique<ExpressionTree::NodeObserve>(rand_terminal);
-	ExpressionTree::NodeObserve::SwapSubTrees(observer, terminal);
+	auto terminal = std::make_unique<NodeObserver>(rand_terminal);
+	
+	NodeObserver::SwapSubTrees(observer, terminal);
 	tree->recalculate();
-}
-bool ShrinkMutation::Filter::selectCondition(const std::unique_ptr<IExpressionNode>& node)
-{
-	return 	NotRoot()(node);
 }

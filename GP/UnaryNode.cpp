@@ -34,18 +34,36 @@ std::unique_ptr<IExpressionNode> UnaryNode::clone()
 	return std::make_unique<UnaryNode>(*this);
 }
 
-TreeDerivative UnaryNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo)
+//TreeDerivative UnaryNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo)
+//{
+//	// Calculate values first
+//	auto left_res = left->autoDiffReverse(thetha, phi, dinfo);
+//	// Calculate derivatives
+//	auto eval = func(left_res.getValues());
+//	auto der = dfunc(left_res.getValues(),left_res.getDerivatives());
+//	return TreeDerivative(eval, der);
+//}
+
+
+TreeDerivative UnaryNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivative::PartialDerivativeStrategy strategy)
 {
 	// Calculate values first
-	auto left_res = left->autoDiffReverse(thetha, phi, dinfo);
-	// Calculate derivatives
-	auto eval = func(left_res.getElement());
-	auto der = dfunc(left_res.getElement(),left_res.getDerivative());
-	return TreeDerivative(eval, der);
+	auto left_res = left->autoDiffReverse(thetha, phi, strategy);
+	auto eval = func(left_res.getValues());
+
+	return TreeDerivative(eval);
+	//for(auto der : left_res.getDerivatives())
+	//	dfunc()
+
+
+	//// Calculate derivatives
+	//auto eval = func(left_res.getValues());
+	//auto der = dfunc(left_res.getValues(), left_res.getDerivatives());
+	//return TreeDerivative(eval, der);
+	//return TreeDerivative();
 }
 
-
-std::any UnaryNode::getValue()
+std::any UnaryNode::getValue() const
 {
 	return func;
 }

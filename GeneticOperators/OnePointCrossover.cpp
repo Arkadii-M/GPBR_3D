@@ -25,8 +25,8 @@ void OnePointCrossover::apply(std::weak_ptr<Individuum> first, std::weak_ptr<Ind
 }
 
 void OnePointCrossover::findCommon(
-	std::unique_ptr<ExpressionTree::NodeObserve> first_observer, 
-	std::unique_ptr<ExpressionTree::NodeObserve> second_observer,
+	std::unique_ptr<NodeObserver> first_observer, 
+	std::unique_ptr<NodeObserver> second_observer,
 	std::vector<common_pair>& common)
 {
 	if (first_observer->isNull() || second_observer->isNull())

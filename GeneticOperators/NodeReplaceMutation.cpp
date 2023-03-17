@@ -13,31 +13,32 @@ void NodeReplaceMutation::apply(std::weak_ptr<Individuum> individuum)
 	if (tree->getHeight() == 0)
 		return;
 
+	auto nodes = tree->filterNodes(NodeFilter(
+		[](NodeFilter::node_arg arg)
+		{
+			return 	NotRoot()(arg);
+		}
+	));
 
-	std::vector<uint> nodes_list = tree->filterNodesIdexes(std::make_unique< NodeReplaceMutation::Filter>());
-	uint rand_node = *Random::get(nodes_list.begin(), nodes_list.end());
-	auto observer = tree->getNodeObserver(rand_node);
+	auto observer = tree->getNodeObserver(*Random::get(nodes.begin(), nodes.end()));
+
 
 	if (observer->isLeaf())
 	{
-		ExpressionTree::NodeObserve::ReplaceNodes(observer, tree_gen->generateTerminal());
+		NodeObserver::ReplaceNodes(observer, tree_gen->generateTerminal());
 		tree->recalculate();
 		return;
 	}
 	if (observer->isUnary())
 	{
-		ExpressionTree::NodeObserve::ReplaceNodes(observer, tree_gen->generateUnary());
+		NodeObserver::ReplaceNodes(observer, tree_gen->generateUnary());
 		tree->recalculate();
 		return;
 	}
 	if (observer->isBinary())
 	{
-		ExpressionTree::NodeObserve::ReplaceNodes(observer, tree_gen->generateBinary());
+		NodeObserver::ReplaceNodes(observer, tree_gen->generateBinary());
 		tree->recalculate();
 		return;
 	}
-}
-bool NodeReplaceMutation::Filter::selectCondition(const std::unique_ptr<IExpressionNode>& node)
-{
-	return NotRoot()(node);
 }

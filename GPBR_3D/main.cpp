@@ -93,46 +93,86 @@ int main()
 	{return dx + dy; };
 
 
+	//auto binary_functions = std::vector< GpData::BinaryItem>();
+	//binary_functions.push_back(GpData::BinaryItem(
+	//	[](const arma::dmat& x, const arma::dmat& y) {return x + y; },"+",SAME_PROB,
+	//	[](	const arma::dmat& x,const arma::dmat& y, 
+	//		const arma::dcube& dx, const arma::dcube& dy) {return dx + dy; }));
+
+	//binary_functions.push_back(GpData::BinaryItem(
+	//	[](const arma::dmat& x, const arma::dmat& y) {return x - y; }, "-", SAME_PROB,
+	//	[](const arma::dmat& x, const arma::dmat& y,
+	//		const arma::dcube& dx, const arma::dcube& dy) {return dx - dy; }));
+	//binary_functions.push_back(GpData::BinaryItem(
+	//	[](const arma::dmat& x, const arma::dmat& y) {return x % y; }, "*", SAME_PROB,
+	//	[](const arma::dmat& x, const arma::dmat& y,
+	//		const arma::dcube& dx, const arma::dcube& dy) {return dx.each_slice() % y - x % dy.each_slice(); }));
+	//binary_functions.push_back(GpData::BinaryItem(
+	//	[](const arma::dmat& x, const arma::dmat& y) {return x / y; }, "/", 0.2,
+	//	[](const arma::dmat& x, const arma::dmat& y,
+	//		const arma::dcube& dx, const arma::dcube& dy) {return dx.each_slice() /y - (x/pow(y,2))%dy.each_slice(); }));
+	//binary_functions.push_back(GpData::BinaryItem(
+	//	[](const arma::dmat& x, const arma::dmat& y) {return pow(x,y); }, "^", 0.6,
+	//	[](const arma::dmat& x, const arma::dmat& y,
+	//		//const arma::dmat& dx, const arma::dmat& dy) {return pow(x,y)%log(x)%dy + y%pow(x,y-1)%dx; }));
+	//		//const arma::dcube& dx, const arma::dcube& dy) {return ( log(x)%dy + (y%dx)/x )% pow(x, y); }));
+	//		const arma::dcube& dx, const arma::dcube& dy) {
+	//			return (log(x) % dy.each_slice() + (y % dx.each_slice()).each_slice() / x).eval().each_slice() % pow(x, y);
+	//	}));
 	auto binary_functions = std::vector< GpData::BinaryItem>();
 	binary_functions.push_back(GpData::BinaryItem(
-		[](const arma::dmat& x, const arma::dmat& y) {return x + y; },"+",SAME_PROB,
-		[](	const arma::dmat& x,const arma::dmat& y, 
-			const arma::dcube& dx, const arma::dcube& dy) {return dx + dy; }));
+		[](const arma::dmat& x, const arma::dmat& y) {return x + y; }, "+", SAME_PROB,
+		[](const arma::dmat& x, const arma::dmat& y,
+			const arma::dmat& dx, const arma::dmat& dy) {return dx + dy; }));
 
 	binary_functions.push_back(GpData::BinaryItem(
 		[](const arma::dmat& x, const arma::dmat& y) {return x - y; }, "-", SAME_PROB,
 		[](const arma::dmat& x, const arma::dmat& y,
-			const arma::dcube& dx, const arma::dcube& dy) {return dx - dy; }));
+			const arma::dmat& dx, const arma::dmat& dy) {return dx - dy; }));
+
 	binary_functions.push_back(GpData::BinaryItem(
 		[](const arma::dmat& x, const arma::dmat& y) {return x % y; }, "*", SAME_PROB,
 		[](const arma::dmat& x, const arma::dmat& y,
-			const arma::dcube& dx, const arma::dcube& dy) {return dx.each_slice() % y - x % dy.each_slice(); }));
+			const arma::dmat& dx, const arma::dmat& dy) {return dx % y - x % dy; }));
+
 	binary_functions.push_back(GpData::BinaryItem(
 		[](const arma::dmat& x, const arma::dmat& y) {return x / y; }, "/", 0.2,
 		[](const arma::dmat& x, const arma::dmat& y,
-			const arma::dcube& dx, const arma::dcube& dy) {return dx.each_slice() /y - (x/pow(y,2))%dy.each_slice(); }));
+			const arma::dmat& dx, const arma::dmat& dy) {return dx / y - (x / pow(y, 2)) % dy; }));
+
 	binary_functions.push_back(GpData::BinaryItem(
-		[](const arma::dmat& x, const arma::dmat& y) {return pow(x,y); }, "^", 0.6,
+		[](const arma::dmat& x, const arma::dmat& y) {return pow(x, y); }, "^", 0.6,
 		[](const arma::dmat& x, const arma::dmat& y,
 			//const arma::dmat& dx, const arma::dmat& dy) {return pow(x,y)%log(x)%dy + y%pow(x,y-1)%dx; }));
 			//const arma::dcube& dx, const arma::dcube& dy) {return ( log(x)%dy + (y%dx)/x )% pow(x, y); }));
-			const arma::dcube& dx, const arma::dcube& dy) {
-				return (log(x) % dy.each_slice() + (y % dx.each_slice()).each_slice() / x).eval().each_slice() % pow(x, y);
+			const arma::dmat& dx, const arma::dmat& dy) {
+				return (log(x) % dy+ (y % dx) / x).eval() % pow(x, y);
 		}));
 	CalculateCumulativeProbabilities(binary_functions);
 
 
+	//auto unary_functions = std::vector<GpData::UnaryItem>();
+	//unary_functions.push_back(GpData::UnaryItem(
+	//	[](const arma::dmat& val) {return arma::sin(val); }, "sin", SAME_PROB,
+	//	[](const arma::dmat& x, const arma::dcube& dx) {return arma::cos(x)%dx.each_slice(); }));
+	//unary_functions.push_back(GpData::UnaryItem(
+	//	[](const arma::dmat& val) {return arma::cos(val); }, "cos", SAME_PROB,
+	//	[](const arma::dmat& x, const arma::dcube& dx) {return -arma::sin(x) % dx.each_slice(); }));
+	////unary_functions.push_back(GpData::UnaryItem([](const arma::dmat& val) {return arma::log(val); }, "log", 0.1));
+	//unary_functions.push_back(GpData::UnaryItem(
+	//	[](const arma::dmat& val) {return arma::sqrt(val); },"sqrt", SAME_PROB,
+	//	[](const arma::dmat& x, const arma::dcube& dx) {return dx.each_slice() /(2*sqrt(x)); }));
 	auto unary_functions = std::vector<GpData::UnaryItem>();
 	unary_functions.push_back(GpData::UnaryItem(
 		[](const arma::dmat& val) {return arma::sin(val); }, "sin", SAME_PROB,
-		[](const arma::dmat& x, const arma::dcube& dx) {return arma::cos(x)%dx.each_slice(); }));
+		[](const arma::dmat& x, const arma::dmat& dx) {return arma::cos(x) % dx; }));
 	unary_functions.push_back(GpData::UnaryItem(
 		[](const arma::dmat& val) {return arma::cos(val); }, "cos", SAME_PROB,
-		[](const arma::dmat& x, const arma::dcube& dx) {return -arma::sin(x) % dx.each_slice(); }));
+		[](const arma::dmat& x, const arma::dmat& dx) {return -arma::sin(x) % dx; }));
 	//unary_functions.push_back(GpData::UnaryItem([](const arma::dmat& val) {return arma::log(val); }, "log", 0.1));
 	unary_functions.push_back(GpData::UnaryItem(
-		[](const arma::dmat& val) {return arma::sqrt(val); },"sqrt", SAME_PROB,
-		[](const arma::dmat& x, const arma::dcube& dx) {return dx.each_slice() /(2*sqrt(x)); }));
+		[](const arma::dmat& val) {return arma::sqrt(val); }, "sqrt", SAME_PROB,
+		[](const arma::dmat& x, const arma::dmat& dx) {return dx/ (2 * sqrt(x)); }));
 	//unary_functions.push_back(GpData::UnaryItem([](const arma::dmat& val) {return arma::exp(val); }, "exp", 0.1));
 	//unary_functions.push_back(GpData::UnaryItem([](const arma::dmat& val) {return arma::abs(val); }, "abs", 0.1));
 	CalculateCumulativeProbabilities(unary_functions);

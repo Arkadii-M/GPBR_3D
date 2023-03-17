@@ -6,7 +6,7 @@
 
 #include "../GP/GeneticOperator.h"
 #include "../GP/random.hpp"
-#include "NodeFilter.h"
+#include "NodeFilterDefines.h"
 
 using Random = effolkronium::random_static;
 
@@ -17,15 +17,6 @@ private:
 public:
 	HoistMutation(uint min_height = 1, double prob = 1.0);
 	virtual void apply(std::weak_ptr<Individuum> individuum) override;
-
-private:
-
-	struct Filter : public ExpressionTree::NodeFilter
-	{
-		const uint min_h;
-		Filter(uint min_h);
-		virtual bool selectCondition(const std::unique_ptr<IExpressionNode>& node) override;
-	};
 };
 
 #endif // !HOIST_MUTATION_H

@@ -7,7 +7,7 @@
 #include <functional>
 
 typedef std::function<arma::dmat(const arma::dmat&, const arma::dmat&)> dmatBinaryFunc;
-typedef std::function<arma::dcube(const arma::dmat& x,const arma::dmat& y,const arma::dcube& dx,const arma::dcube& dy)> dmatBinaryDerivative;
+typedef std::function<arma::dmat(const arma::dmat& x,const arma::dmat& y,const arma::dmat& dx,const arma::dmat& dy)> dmatBinaryDerivative;
 class BinaryNode : public IExpressionNode
 {
 private:
@@ -26,9 +26,9 @@ public:
 
 	virtual std::unique_ptr<IExpressionNode> clone() override;
 
-	virtual TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo) override;
-
-	virtual std::any getValue() override;
+	//virtual TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo) override;
+	virtual TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivative::PartialDerivativeStrategy strategy) override;
+	virtual std::any getValue() const override;
 
 };
 

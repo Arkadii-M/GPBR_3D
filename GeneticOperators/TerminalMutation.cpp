@@ -13,15 +13,17 @@ void TerminalMutation::apply(std::weak_ptr<Individuum> individuum)
 	if (tree->getHeight() == 0)
 		return;
 
+	auto terminals = tree->filterNodes(NodeFilter(
+		[](NodeFilter::node_arg arg)
+		{
+			return arg->isLeaf();
+		}
+	));
+	if (terminals.empty())
+		return;
 
-	auto terminals = tree->filterNodesIdexes(std::make_unique <TerminalMutation::Filter>());
-	uint rand_terminal = *Random::get(terminals.begin(), terminals.end());
-	auto rand_observer = tree->getNodeObserver(rand_terminal);
-	ExpressionTree::NodeObserve::SwapSubTrees(rand_observer, tree_gen->generateTerminal());
+	auto rand_observer = tree->getNodeObserver(*Random::get(terminals.begin(), terminals.end()));
+
+	NodeObserver::SwapSubTrees(rand_observer, tree_gen->generateTerminal());
 	tree->recalculate();
-}
-
-bool TerminalMutation::Filter::selectCondition(const std::unique_ptr<IExpressionNode>& node)
-{
-	return 	IsLeaf()(node);
 }

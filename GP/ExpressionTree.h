@@ -9,6 +9,10 @@ typedef unsigned int uint;
 
 #include "IExpressionNode.h"
 #include "TempNode.h"
+#include "NodeObserver.h"
+#include "NodeFilter.h"
+#include "TreeTraversal.h"
+
 
 class ExpressionTree {
 
@@ -17,47 +21,19 @@ private:
 	std::unique_ptr<IExpressionNode> root;
 
 public:
-	class NodeObserve {
-	private:
-		std::unique_ptr<IExpressionNode>& current;
-	public:
-		NodeObserve() = default;
-		NodeObserve(std::unique_ptr<IExpressionNode>& curr);
-		~NodeObserve() = default;
-
-		std::unique_ptr<NodeObserve> getLeft() const;
-		std::unique_ptr<NodeObserve> getRight() const;
-		bool isLeaf() const;
-		bool isVariable() const;
-		bool isConstant() const;
-		bool isUnary() const;
-		bool isBinary() const;
-		bool isNull() const;
-		std::any getValue();
-
-		std::string getName() const;
-		uint getNum() const;
-		std::string print() const;
-
-		std::unique_ptr<IExpressionNode> subTreeCopy();
-		static void SwapSubTrees(std::unique_ptr<NodeObserve>& first, std::unique_ptr<NodeObserve>& second);
-		static void SwapSubTrees(std::unique_ptr<NodeObserve>& first, std::unique_ptr<IExpressionNode> second);
-		static void ReplaceNodes(std::unique_ptr<NodeObserve>& first, std::unique_ptr<NodeObserve>& second);
-		static void ReplaceNodes(std::unique_ptr<NodeObserve>& first, std::unique_ptr<IExpressionNode> second);
-	};
 	static void SwapSubTress(
 		std::unique_ptr<ExpressionTree>& first_tree,
 		std::unique_ptr<ExpressionTree>& second_tree,
-		std::unique_ptr<NodeObserve>& first_observe,
-		std::unique_ptr<NodeObserve>& second_observe);
+		std::unique_ptr<NodeObserver>& first_observe,
+		std::unique_ptr<NodeObserver>& second_observe);
 	static void ReplaceNodes(
 		std::unique_ptr<ExpressionTree>& first_tree,
 		std::unique_ptr<ExpressionTree>& second_tree,
-		std::unique_ptr<NodeObserve>& first_observe,
-		std::unique_ptr<NodeObserve>& second_observe);
+		std::unique_ptr<NodeObserver>& first_observe,
+		std::unique_ptr<NodeObserver>& second_observe);
 
-	std::unique_ptr<NodeObserve> getRootObserver();
-	std::unique_ptr <NodeObserve> getNodeObserver(uint node_id);
+	std::unique_ptr<NodeObserver> getRootObserver();
+	std::unique_ptr<NodeObserver> getNodeObserver(uint node_id);
 
 	/// <summary>
 	/// Tree traversal with handler.
@@ -98,10 +74,10 @@ private:
 	struct ObserverExtract : public OrderHandler {
 	private:
 		const uint node_id;
-		std::unique_ptr<NodeObserve> observer;
+		std::unique_ptr<NodeObserver> observer;
 	public:
 		ObserverExtract(uint id);
-		std::unique_ptr<NodeObserve> getObserver();
+		std::unique_ptr<NodeObserver> getObserver();
 		// Inherited via OrderHandler
 		virtual bool operator()(std::unique_ptr<IExpressionNode>& node) override;
 
@@ -125,22 +101,15 @@ public:
 
 	std::string print();
 
-	struct NodeFilter : public OrderHandler
-	{
-	private:
-		std::vector<uint> filtered_indexes;
-	public:
-		NodeFilter();
-		virtual bool operator()(std::unique_ptr<IExpressionNode>& node) override;
-		virtual bool selectCondition(const std::unique_ptr<IExpressionNode>& node) = 0;
-		std::vector<uint> getResult();
-	};
-	std::vector<uint> filterNodesIdexes(std::unique_ptr<NodeFilter> filter);
+	std::vector<uint> filterNodes(NodeFilter filter);
 
 	std::unique_ptr<IExpressionNode> SubTree(std::unique_ptr<ExpressionTree>& tree, const uint sub_index);
 
 	arma::dmat evaluate(const arma::dmat& thetha, const arma::dmat& phi);
-	TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo);
+
+	//TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo);
+	TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi,
+		TreeDerivative::PartialDerivativeStrategy strategy = TreeDerivative::PartialDerivativeStrategy::OnlyConstsDerivative);
 };
 
 #endif // ! EXPRESSION_TREE_H

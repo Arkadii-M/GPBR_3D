@@ -5,7 +5,7 @@
 
 #include "../GP/GeneticOperator.h"
 #include "../GP/random.hpp"
-#include "NodeFilter.h"
+#include "NodeFilterDefines.h"
 #include "../GP/TreeGenerator.h"
 #include "../GP/GpData.h"
 
@@ -22,8 +22,8 @@ public:
 	virtual void apply(std::weak_ptr<Individuum> individuum) override;
 
 private:
-	bool checkRootAndMutateIfNeed(std::unique_ptr<ExpressionTree::NodeObserve>& root_observer,const double fit_scale);
-	void adjustConstant(std::unique_ptr<ExpressionTree::NodeObserve>& const_observer, const double fit_scale);
+	bool checkRootAndMutateIfNeed(std::unique_ptr<NodeObserver>& root_observer,const double fit_scale);
+	void adjustConstant(std::unique_ptr<NodeObserver>& const_observer, const double fit_scale);
 };
 
 #endif // !SCALE_MUTATION_H

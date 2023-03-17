@@ -39,7 +39,7 @@ public:
 	void parseJsonToPopulation(json jpopulation, Population& population);
 private:
 	// Tree
-	json parseSubTreeToJson(std::unique_ptr<ExpressionTree::NodeObserve> node);
+	json parseSubTreeToJson(std::unique_ptr<NodeObserver> node);
 	std::unique_ptr<IExpressionNode> parseJsonToSubTree(json subtree);
 
 };

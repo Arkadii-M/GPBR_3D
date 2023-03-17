@@ -7,7 +7,7 @@
 #include <functional>
 
 typedef std::function<arma::dmat(const arma::dmat&)> dmatUnaryFunc;
-typedef std::function<arma::dcube(const arma::dmat& x,const arma::dcube& dx)> dmatUnaryDerivative;
+typedef std::function<arma::dmat(const arma::dmat& x,const arma::dmat& dx)> dmatUnaryDerivative;
 class UnaryNode : public IExpressionNode
 {
 private:
@@ -30,9 +30,9 @@ public:
 
 
 	// Inherited via IExpressionNode
-	virtual TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo) override;
-
-	virtual std::any getValue() override;
+	//virtual TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo) override;
+	virtual TreeDerivative autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivative::PartialDerivativeStrategy strategy) override;
+	virtual std::any getValue() const override;
 
 };
 

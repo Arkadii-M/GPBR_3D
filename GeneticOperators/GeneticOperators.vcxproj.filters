@@ -33,7 +33,7 @@
     <ClInclude Include="HoistMutation.h">
       <Filter>Header Files\Mutation</Filter>
     </ClInclude>
-    <ClInclude Include="NodeFilter.h">
+    <ClInclude Include="NodeFilterDefines.h">
       <Filter>Header Files\Filter</Filter>
     </ClInclude>
     <ClInclude Include="NodeReplaceMutation.h">

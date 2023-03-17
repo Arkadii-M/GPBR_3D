@@ -1,33 +1,95 @@
 #include "PartialTreeDerivative.h"
+//
+//TreeDerivativeInfo::TreeDerivativeInfo(std::vector<uint> ids):
+//	diff_ids(ids)
+//{
+//}
+//
+//bool TreeDerivativeInfo::inDiffIdArray(const uint id) const
+//{
+//	return std::find(diff_ids.begin(), diff_ids.end(), id) != diff_ids.end();
+//}
+//
+//uint TreeDerivativeInfo::getNelements() const
+//{
+//	return diff_ids.size();
+//}
+//
+//
+//TreeDerivative::TreeDerivative(arma::dmat& x, arma::dcube& dx):
+//	x(x),
+//	dx(dx)
+//{
+//}
+//
+//const arma::dmat& TreeDerivative::getValues() const
+//{
+//	return x;
+//}
+//
+//const arma::dcube& TreeDerivative::getDerivatives() const
+//{
+//	return dx;
+//}
 
-TreeDerivativeInfo::TreeDerivativeInfo(std::vector<uint> ids):
-	diff_ids(ids)
+TreeDerivative::TreeDerivative(arma::dmat vals):
+	values(vals)
 {
 }
 
-bool TreeDerivativeInfo::inDiffIdArray(const uint id) const
+TreeDerivative::TreeDerivative(arma::dmat vals, LeafDerivative derivative):
+	values(vals)
 {
-	return std::find(diff_ids.begin(), diff_ids.end(), id) != diff_ids.end();
+	derivatives.push_back(derivative);
 }
 
-uint TreeDerivativeInfo::getNelements() const
+void TreeDerivative::setValues(arma::dmat vals)
 {
-	return diff_ids.size();
+	values = vals;
 }
 
+arma::dmat TreeDerivative::getValues() const
+{
+	return values;
+}
 
-TreeDerivative::TreeDerivative(arma::dmat& x, arma::dcube& dx):
-	x(x),
+std::vector<TreeDerivative::LeafDerivative> TreeDerivative::getDerivatives() const
+{
+	return derivatives;
+}
+
+void TreeDerivative::ConcatDerivatives(TreeDerivative& first, TreeDerivative& second)
+{
+	//TODO concat derivatives
+}
+
+TreeDerivative::LeafDerivative::LeafDerivative(uint id, arma::dmat dx):
+	id(id),
 	dx(dx)
 {
 }
 
-const arma::dmat& TreeDerivative::getElement() const
+uint TreeDerivative::LeafDerivative::getId() const
 {
-	return x;
+	return id;
 }
 
-const arma::dcube& TreeDerivative::getDerivative() const
+arma::dmat TreeDerivative::LeafDerivative::getDerivative() const
 {
 	return dx;
+}
+
+arma::dmat TreeDerivative::LeafDerivative::getOtherDerivative() const
+{
+	return dNotx;
+}
+
+void TreeDerivative::LeafDerivative::setDerivative(arma::dmat& dx)
+{
+	this->dx = dx;
+}
+
+void TreeDerivative::LeafDerivative::setOtherDerivative(arma::dmat& dNotx)
+{
+	this->dNotx = dNotx;
 }

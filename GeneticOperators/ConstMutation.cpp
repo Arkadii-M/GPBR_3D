@@ -19,28 +19,24 @@ void ConstantMutation::apply(std::weak_ptr<Individuum> individuum)
 	if (tree->getHeight() == 0)
 		return;
 
-	auto nodes_list = tree->filterNodesIdexes(std::make_unique<ConstantMutation::Filter>());
+	auto terminals = tree->filterNodes(NodeFilter(
+		[](NodeFilter::node_arg arg)
+		{
+			return IsLeaf()(arg) && IsNumber()(arg);
+		}
+	));
 
-	if (nodes_list.size() == 0)// no node to select
+	if (terminals.empty())
 		return;
 
-	uint rand_node = *Random::get(nodes_list.begin(), nodes_list.end());
+	auto observer = tree->getNodeObserver(*Random::get(terminals.begin(), terminals.end()));
 
-	auto observer = tree->getNodeObserver(rand_node);
-	//ExpressionTree::NodeObserve::SwapSubTrees(observer,
-	//	std::make_unique<ConstantNode>(std::stod(observer->getName()) + Random::get<double>(-1.0, 1.0), n_rows, n_cols));
 
 	double fit_scale = scale*individuum.lock()->getFintness();
 	double rand_value = Random::get<double>(a- fit_scale, b+ fit_scale);
 
-	//ExpressionTree::NodeObserve::SwapSubTrees(observer,
-	//	std::make_unique<ConstantNode>(std::stod(observer->getName()) + rand_value));
-	ExpressionTree::NodeObserve::SwapSubTrees(observer,
+	NodeObserver::SwapSubTrees(observer,
 		std::make_unique<ConstantNode>(std::any_cast<double>(observer->getValue()) + rand_value));
 	
 	tree->recalculate();
-}
-bool ConstantMutation::Filter::selectCondition(const std::unique_ptr<IExpressionNode>& node)
-{
-	return 	IsLeaf()(node) && IsNumber()(node);
 }

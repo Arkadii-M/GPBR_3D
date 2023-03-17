@@ -29,20 +29,42 @@ std::unique_ptr<IExpressionNode> VariableNode::clone()
     return std::make_unique<VariableNode>(*this);
 }
 
-TreeDerivative VariableNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo)
+TreeDerivative VariableNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivative::PartialDerivativeStrategy strategy)
 {
     auto eval = evaluate(thetha, phi);
-    if (dinfo.inDiffIdArray(this->order_number))
+    switch (strategy)
     {
-        auto ones = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::ones);
-        return TreeDerivative(eval, ones);
+    case TreeDerivative::PartialDerivativeStrategy::OnlyConstsDerivative:
+        return TreeDerivative(eval);
+    default:
+        break;
     }
-    auto zeros = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::zeros);
-    return TreeDerivative(eval, zeros);
+    throw std::logic_error("autoDiffReverse invalid strategy");
+
+    //if (strategy == TreeDerivative::PartialDerivativeStrategy::OnlyConstsDerivative)
+    //    return TreeDerivative(
+    //        eval,
+    //        TreeDerivative::LeafDerivative(
+    //            this->order_number,
+    //            arma::dmat(thetha.n_rows, thetha.n_cols, arma::fill::ones)));
+
+    //return TreeDerivative(
+    //    eval,
+    //    TreeDerivative::LeafDerivative(
+    //        this->order_number,
+    //        arma::dmat(thetha.n_rows, thetha.n_cols, arma::fill::zeros)));
+    //auto eval = evaluate(thetha, phi);
+    //if (dinfo.inDiffIdArray(this->order_number))
+    //{
+    //    auto ones = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::ones);
+    //    return TreeDerivative(eval, ones);
+    //}
+    //auto zeros = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::zeros);
+    //return TreeDerivative(eval, zeros);
 }
 
 
-std::any VariableNode::getValue()
+std::any VariableNode::getValue() const
 {
     return this->node_name;
 }

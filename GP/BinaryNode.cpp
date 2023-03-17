@@ -40,18 +40,21 @@ std::unique_ptr<IExpressionNode> BinaryNode::clone()
     return std::make_unique<BinaryNode>(*this);
 }
 
-TreeDerivative BinaryNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo)
+TreeDerivative BinaryNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivative::PartialDerivativeStrategy strategy)
 {
     // Calculate values first
-    auto left_res = left->autoDiffReverse(thetha, phi, dinfo);
-    auto right_res = left->autoDiffReverse(thetha, phi, dinfo);
+    auto left_res = left->autoDiffReverse(thetha, phi, strategy);
+    auto right_res = left->autoDiffReverse(thetha, phi, strategy);
+
+
+    return TreeDerivative(thetha);
     // Calculate derivatives
-    auto eval = func(left_res.getElement(), right_res.getElement());
-    auto der = dfunc(left_res.getElement(), right_res.getElement(), left_res.getDerivative(), right_res.getDerivative());
-    return TreeDerivative(eval, der);
+    //auto eval = func(left_res.getValues(), right_res.getValues());
+    //auto der = dfunc(left_res.getValues(), right_res.getValues(), left_res.getDerivatives(), right_res.getDerivatives());
+    //return TreeDerivative(eval, der);
 }
 
-std::any BinaryNode::getValue()
+std::any BinaryNode::getValue() const
 {
     return func;
 }

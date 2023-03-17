@@ -5,7 +5,7 @@
 
 #include "../GP/GeneticOperator.h"
 #include "../GP/random.hpp"
-#include "NodeFilter.h"
+#include "NodeFilterDefines.h"
 
 using Random = effolkronium::random_static;
 
@@ -18,13 +18,6 @@ private:
 public:
 	ConstantMutation(double a,double b, double scale,double prob = 1.0);
 	virtual void apply(std::weak_ptr<Individuum> individuum) override;
-
-private:
-
-	struct Filter : public ExpressionTree::NodeFilter
-	{
-		virtual bool selectCondition(const std::unique_ptr<IExpressionNode>& node) override;
-	};
 };
 
 #endif // !CONSTANT_MUTATION_H

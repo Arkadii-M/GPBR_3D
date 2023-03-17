@@ -9,7 +9,7 @@ json GpParser::parseTreeToJson(std::unique_ptr<ExpressionTree>& tree)
 {
 	return parseSubTreeToJson(tree->getRootObserver());
 }
-json GpParser::parseSubTreeToJson(std::unique_ptr<ExpressionTree::NodeObserve> node)
+json GpParser::parseSubTreeToJson(std::unique_ptr<NodeObserver> node)
 {
 	if (node->isNull())
 		return nullptr;

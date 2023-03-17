@@ -37,6 +37,12 @@
     <Filter Include="Source Files\GP\Data">
       <UniqueIdentifier>{bd0d98e7-ac73-4512-8cfe-4f2b37996568}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ExpressionTree\ExpressionNodes">
+      <UniqueIdentifier>{8436b40f-3148-44f9-b7f8-2a58575d523b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ExpressionTree\ExpressionNodes">
+      <UniqueIdentifier>{d4ffc3d8-40e8-4dd0-895c-b3b040f23fff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ExpressionTree.h">
@@ -60,9 +66,6 @@
     <ClInclude Include="TreeGenerator.h">
       <Filter>Header Files\GP</Filter>
     </ClInclude>
-    <ClInclude Include="TempNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
     <ClInclude Include="SaveLoad.h">
       <Filter>Header Files\GP</Filter>
     </ClInclude>
@@ -84,21 +87,6 @@
     <ClInclude Include="Selector.h">
       <Filter>Header Files\GP</Filter>
     </ClInclude>
-    <ClInclude Include="VariableNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="BinaryNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstantNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="IExpressionNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="UnaryNode.h">
-      <Filter>Header Files\ExpressionTree</Filter>
-    </ClInclude>
     <ClInclude Include="GpItemDerivative.h">
       <Filter>Header Files\GP\Data</Filter>
     </ClInclude>
@@ -107,6 +95,33 @@
     </ClInclude>
     <ClInclude Include="IndividuumData.h">
       <Filter>Header Files\GP\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryNode.h">
+      <Filter>Header Files\ExpressionTree\ExpressionNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantNode.h">
+      <Filter>Header Files\ExpressionTree\ExpressionNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="IExpressionNode.h">
+      <Filter>Header Files\ExpressionTree\ExpressionNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="TempNode.h">
+      <Filter>Header Files\ExpressionTree\ExpressionNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="UnaryNode.h">
+      <Filter>Header Files\ExpressionTree\ExpressionNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableNode.h">
+      <Filter>Header Files\ExpressionTree\ExpressionNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeObserver.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeTraversal.h">
+      <Filter>Header Files\ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeFilter.h">
+      <Filter>Header Files\ExpressionTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +140,6 @@
     <ClCompile Include="Individuum.cpp">
       <Filter>Source Files\GP</Filter>
     </ClCompile>
-    <ClCompile Include="TempNode.cpp">
-      <Filter>Source Files\ExpressionTree</Filter>
-    </ClCompile>
     <ClCompile Include="GpParser.cpp">
       <Filter>Source Files\GP</Filter>
     </ClCompile>
@@ -140,22 +152,34 @@
     <ClCompile Include="TreeGenerator.cpp">
       <Filter>Source Files\GP</Filter>
     </ClCompile>
-    <ClCompile Include="VariableNode.cpp">
+    <ClCompile Include="PartialTreeDerivative.cpp">
       <Filter>Source Files\ExpressionTree</Filter>
     </ClCompile>
     <ClCompile Include="BinaryNode.cpp">
-      <Filter>Source Files\ExpressionTree</Filter>
+      <Filter>Source Files\ExpressionTree\ExpressionNodes</Filter>
     </ClCompile>
     <ClCompile Include="ConstantNode.cpp">
-      <Filter>Source Files\ExpressionTree</Filter>
+      <Filter>Source Files\ExpressionTree\ExpressionNodes</Filter>
     </ClCompile>
-    <ClCompile Include="IExpressionNode.cpp">
-      <Filter>Source Files\ExpressionTree</Filter>
+    <ClCompile Include="TempNode.cpp">
+      <Filter>Source Files\ExpressionTree\ExpressionNodes</Filter>
     </ClCompile>
     <ClCompile Include="UnaryNode.cpp">
+      <Filter>Source Files\ExpressionTree\ExpressionNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableNode.cpp">
+      <Filter>Source Files\ExpressionTree\ExpressionNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="IExpressionNode.cpp">
+      <Filter>Source Files\ExpressionTree\ExpressionNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeObserver.cpp">
       <Filter>Source Files\ExpressionTree</Filter>
     </ClCompile>
-    <ClCompile Include="PartialTreeDerivative.cpp">
+    <ClCompile Include="TreeTraversal.cpp">
+      <Filter>Source Files\ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeFilter.cpp">
       <Filter>Source Files\ExpressionTree</Filter>
     </ClCompile>
   </ItemGroup>

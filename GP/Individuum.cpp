@@ -49,7 +49,7 @@ void Individuum::setTree(std::unique_ptr<ExpressionTree> tree)
 
 
 std::unique_ptr<IndividuumData>& Individuum::getData() { return data; }
-void Individuum::setData(std::unique_ptr<IndividuumData> data) { this->data = data; }
+void Individuum::setData(std::unique_ptr<IndividuumData> data) { this->data = std::move(data); }
 
 bool Individuum::cmp_weak(const std::weak_ptr<Individuum>& a, const std::weak_ptr<Individuum>& b)
 {

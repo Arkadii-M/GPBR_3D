@@ -3,7 +3,8 @@
 #include <algorithm>
 #include "../GP/GeneticOperator.h"
 #include "../GP/random.hpp"
-#include "NodeFilter.h"
+#include "../GP/NodeObserver.h"
+#include "NodeFilterDefines.h"
 
 
 using Random = effolkronium::random_static;
@@ -17,8 +18,8 @@ public:
 	void apply(std::weak_ptr<Individuum> first, std::weak_ptr<Individuum> second) override;
 private:
 	void commonCrossover(
-		std::unique_ptr<ExpressionTree::NodeObserve> first_observer,
-		std::unique_ptr<ExpressionTree::NodeObserve> second_observer);
+		std::unique_ptr<NodeObserver> first_observer,
+		std::unique_ptr<NodeObserver> second_observer);
 };
 
 #endif // !UNIFORM_CROSSOVER_H

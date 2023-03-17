@@ -147,6 +147,8 @@
     <ClInclude Include="Individuum.h" />
     <ClInclude Include="GpParser.h" />
     <ClInclude Include="IndividuumData.h" />
+    <ClInclude Include="NodeFilter.h" />
+    <ClInclude Include="NodeObserver.h" />
     <ClInclude Include="PartialTreeDerivative.h" />
     <ClInclude Include="Population.h" />
     <ClInclude Include="random.hpp" />
@@ -154,6 +156,7 @@
     <ClInclude Include="Selector.h" />
     <ClInclude Include="TempNode.h" />
     <ClInclude Include="TreeGenerator.h" />
+    <ClInclude Include="TreeTraversal.h" />
     <ClInclude Include="UnaryNode.h" />
     <ClInclude Include="VariableNode.h" />
   </ItemGroup>
@@ -168,10 +171,13 @@
     <ClCompile Include="GpParser.cpp" />
     <ClCompile Include="IExpressionNode.cpp" />
     <ClCompile Include="Individuum.cpp" />
+    <ClCompile Include="NodeFilter.cpp" />
+    <ClCompile Include="NodeObserver.cpp" />
     <ClCompile Include="PartialTreeDerivative.cpp" />
     <ClCompile Include="Population.cpp" />
     <ClCompile Include="TempNode.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
+    <ClCompile Include="TreeTraversal.cpp" />
     <ClCompile Include="UnaryNode.cpp" />
     <ClCompile Include="VariableNode.cpp" />
   </ItemGroup>

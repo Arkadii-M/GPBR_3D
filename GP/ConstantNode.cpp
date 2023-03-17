@@ -41,21 +41,35 @@ std::unique_ptr<IExpressionNode> ConstantNode::clone()
     return std::make_unique<ConstantNode>(*this);
 }
 
-TreeDerivative ConstantNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivativeInfo& dinfo)
+TreeDerivative ConstantNode::autoDiffReverse(const arma::dmat& thetha, const arma::dmat& phi, const TreeDerivative::PartialDerivativeStrategy strategy)
 {
     auto eval = evaluate(thetha, phi);
-    if (dinfo.inDiffIdArray(this->order_number))
-    {
-        auto ones = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::ones);
-        return TreeDerivative(eval,ones);
-    }
-    auto zeros = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::zeros);
-    return TreeDerivative(eval, zeros);
+
+    if (strategy == TreeDerivative::PartialDerivativeStrategy::OnlyConstsDerivative)
+        return TreeDerivative(
+            eval,
+            TreeDerivative::LeafDerivative(
+                this->order_number,
+                arma::dmat(thetha.n_rows, thetha.n_cols,arma::fill::ones)));
+
+    return TreeDerivative(
+        eval,
+        TreeDerivative::LeafDerivative(
+            this->order_number,
+            arma::dmat(thetha.n_rows, thetha.n_cols, arma::fill::zeros)));
+
+    //if (dinfo.inDiffIdArray(this->order_number))
+    //{
+    //    auto ones = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::ones);
+    //    return TreeDerivative(eval,ones);
+    //}
+    //auto zeros = arma::dcube(thetha.n_rows, thetha.n_cols, dinfo.getNelements(), arma::fill::zeros);
+    //return TreeDerivative(eval, zeros);
 }
 
 
 
-std::any ConstantNode::getValue()
+std::any ConstantNode::getValue() const
 {
     return this->value;
 }

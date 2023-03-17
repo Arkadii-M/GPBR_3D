@@ -17,7 +17,7 @@ void UniformCrossover::apply(std::weak_ptr<Individuum> first, std::weak_ptr<Indi
 	second_tree->recalculate();
 }
 
-void UniformCrossover::commonCrossover(std::unique_ptr<ExpressionTree::NodeObserve> first_observer, std::unique_ptr<ExpressionTree::NodeObserve> second_observer)
+void UniformCrossover::commonCrossover(std::unique_ptr<NodeObserver> first_observer, std::unique_ptr<NodeObserver> second_observer)
 {
 	if (first_observer->isNull() || second_observer->isNull())
 		return;
@@ -28,16 +28,16 @@ void UniformCrossover::commonCrossover(std::unique_ptr<ExpressionTree::NodeObser
 		{
 			if (first_observer->isLeaf() || second_observer->isLeaf()) // if one of the tree is leaf swap subtrees and return
 			{
-				ExpressionTree::NodeObserve::SwapSubTrees(first_observer, second_observer);
+				NodeObserver::SwapSubTrees(first_observer, second_observer);
 				return;
 			}
 			if (first_observer->isBinary() && second_observer->isBinary()
 				|| first_observer->isUnary() && second_observer->isUnary())// both nodes are the same type so replace them
 			{
-				ExpressionTree::NodeObserve::ReplaceNodes(first_observer, second_observer);
+				NodeObserver::ReplaceNodes(first_observer, second_observer);
 			}
 			// Else just swap subtrees
-			ExpressionTree::NodeObserve::SwapSubTrees(first_observer, second_observer);
+			NodeObserver::SwapSubTrees(first_observer, second_observer);
 
 		}
 	}
